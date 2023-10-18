@@ -36,8 +36,6 @@ namespace JC.WebApi.Controllers
             })
             .ToArray();
 
-            var teste =  _categoriaService.ObterCategoriasPermissao().Result;
-
             return result;
         }
     }
