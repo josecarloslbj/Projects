@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FluentMigrator" Version="3.3.2" />
+    <PackageReference Include="FluentMigrator.Runner.MySql" Version="3.3.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Scripts\Inserts\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\JC.Core\JC.Core.csproj" />
+    <ProjectReference Include="..\JC.Infrastructure\JC.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -9,7 +9,7 @@ public class Categoria : EntidadeBase
     public string? Descricao { get; set; }
     public string? Icon { get; set; }
     public int? Ordem { get; set; }
-    //public virtual IList<Permissao>? Permissoes { get; set; }
+    public virtual IList<Permissao>? Permissoes { get; set; }
 
     public int? IdUsuario { get; set; }
 

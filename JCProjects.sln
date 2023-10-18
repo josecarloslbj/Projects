@@ -27,6 +27,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JC.IdentityServer", "BackEn
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JC.NotificationsApi", "BackEnd\Mensageria\JC.NotificationsApi\JC.NotificationsApi.csproj", "{BBA78E05-7DF7-4DC2-BC32-5AA9CFE43ED7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JC.MySQLMigration", "BackEnd\JC.MySQLMigration\JC.MySQLMigration.csproj", "{94C70AC2-9070-4C56-88AA-6BB671E9A31B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -61,6 +63,10 @@ Global
 		{BBA78E05-7DF7-4DC2-BC32-5AA9CFE43ED7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BBA78E05-7DF7-4DC2-BC32-5AA9CFE43ED7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BBA78E05-7DF7-4DC2-BC32-5AA9CFE43ED7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{94C70AC2-9070-4C56-88AA-6BB671E9A31B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{94C70AC2-9070-4C56-88AA-6BB671E9A31B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{94C70AC2-9070-4C56-88AA-6BB671E9A31B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{94C70AC2-9070-4C56-88AA-6BB671E9A31B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -76,6 +82,7 @@ Global
 		{C3E04365-A34B-4016-9433-593BC51E8007} = {D8C97B78-0410-46C9-99DE-64196DD16E1D}
 		{0F53FD0C-C79E-41BC-AC33-9D01B68550BE} = {C3E04365-A34B-4016-9433-593BC51E8007}
 		{BBA78E05-7DF7-4DC2-BC32-5AA9CFE43ED7} = {83F36C46-6AE3-41A3-AE1F-6DCA179F02BB}
+		{94C70AC2-9070-4C56-88AA-6BB671E9A31B} = {D8C97B78-0410-46C9-99DE-64196DD16E1D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {94B75268-88D3-4495-A5B9-2EA54B589CA4}

@@ -1,10 +1,10 @@
-﻿using JC.Infrastructure.Shared;
+﻿using JC.Application.Comuns;
+using JC.Application.Exceptions;
+using JC.Infrastructure.Shared;
 using Microsoft.AspNetCore.Http.Features;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Data;
 using System.Text.Json;
-
 
 namespace JC.WebApi.Middlewares
 {
@@ -66,54 +66,54 @@ namespace JC.WebApi.Middlewares
             }
             catch (Exception error)
             {
-                //if (transaction != null)
-                //    transaction.Rollback();
+                if (transaction != null)
+                    transaction.Rollback();
 
-                //var response = httpContext.Response;
-                //response.ContentType = "application/json";
+                var response = httpContext.Response;
+                response.ContentType = "application/json";
 
-                //RespostaBaseViewModelGenerico resposta = new RespostaBaseViewModelGenerico();
+                RespostaBaseViewModelGenerico resposta = new RespostaBaseViewModelGenerico();
 
-                //var statusCode = System.Net.HttpStatusCode.OK;
-                //var exception = error;
-                //if (exception != null)
-                //{
-                //    var exValidate = exception;
-                //    while (exValidate != null && !(exValidate is DomainLayerException))
-                //    {
-                //        if (exValidate.InnerException is DomainLayerException)
-                //        {
-                //            exception = exValidate.InnerException;
-                //            break;
-                //        }
-                //        exValidate = exValidate.InnerException;
-                //    }
+                var statusCode = System.Net.HttpStatusCode.OK;
+                var exception = error;
+                if (exception != null)
+                {
+                    var exValidate = exception;
+                    while (exValidate != null && !(exValidate is DomainLayerException))
+                    {
+                        if (exValidate.InnerException is DomainLayerException)
+                        {
+                            exception = exValidate.InnerException;
+                            break;
+                        }
+                        exValidate = exValidate.InnerException;
+                    }
 
-                //    if (exception is DomainLayerException dle)
-                //    {
-                //        resposta.MensagemRetorno = dle.Message;
+                    if (exception is DomainLayerException dle)
+                    {
+                        resposta.MensagemRetorno = dle.Message;
 
-                //        if (dle.Erros != null && dle.Erros.Any())
-                //            resposta.Erros = dle.Erros;
+                        if (dle.Erros != null && dle.Erros.Any())
+                            resposta.Erros = dle.Erros;
 
-                //        resposta.Status = dle.Status;
-                //        resposta.Excecao = dle.Message;
-                //        statusCode = dle.HttpStatusCode;
+                        resposta.Status = dle.Status;
+                        resposta.Excecao = dle.Message;
+                        statusCode = dle.HttpStatusCode;
 
-                //        //logger.LogDebug(exception, exception.Message);
-                //    }
-                //    else if (exception is Exception)
-                //    {
-                //        resposta.MensagemRetorno = exception.Message;
-                //        resposta.Excecao = exception.GetExceptionText();
-                //        resposta.Status = -1;
+                        //logger.LogDebug(exception, exception.Message);
+                    }
+                    else if (exception is Exception)
+                    {
+                        resposta.MensagemRetorno = exception.Message;
+                        resposta.Excecao = exception.GetExceptionText();
+                        resposta.Status = -1;
 
-                //    }
-                //}
+                    }
+                }
 
-                //var result = new JsonResult(resposta);
-                //result.StatusCode = (int)statusCode;
-                //await response.WriteAsync(JsonSerializer.Serialize(result));
+                var result = new JsonResult(resposta);
+                result.StatusCode = (int)statusCode;
+                await response.WriteAsync(JsonSerializer.Serialize(result));
             }
             finally
             {
