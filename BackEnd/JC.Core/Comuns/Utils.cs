@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using Microsoft.AspNetCore.Http;
+using System.Reflection;
 
 namespace JC.Core.Comuns;
 
@@ -17,5 +18,42 @@ public static class Enumeradores
             }
         }
         return GenericEnum.ToString();
+    }
+}
+
+
+public static class UploadUtils
+{
+    public async static Task<string> UploadAsync(IFormFile file)
+    {
+        string caminhoArquivo = string.Empty;
+        try
+        {
+            if (file.Length > 0)
+            {
+
+                string subDiretorio = DateTime.Now.ToString("yyyyMMddHHmmss");
+                string diretorio = $"{Constantes.DIRETORIO_IMAGENS}{subDiretorio}\\";
+
+                // diretorio = $"..\\..\\..\\StoreShop\\Frontend\\JC.Web\\apps\\app-store\\src\\assets\\images\\";
+
+                if (!Directory.Exists(diretorio))
+                    Directory.CreateDirectory(diretorio);
+
+                caminhoArquivo = diretorio + file.FileName;
+
+                using (FileStream filestream = File.Create(caminhoArquivo))
+                {
+                    await file.CopyToAsync(filestream);
+                    filestream.Flush();
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            caminhoArquivo = string.Empty;
+        }
+
+        return caminhoArquivo;
     }
 }
