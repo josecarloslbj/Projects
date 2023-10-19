@@ -1,6 +1,6 @@
 ﻿using Dommel;
 using JC.Core.Base;
-using JC.Infrastructure.Shared;
+using JC.Infrastructure.Shared.Uow;
 using Newtonsoft.Json.Linq;
 using System.Data;
 using System.Linq.Expressions;

@@ -5,7 +5,7 @@ using JC.Core.Dtos;
 using JC.Core.Dtos.Filters;
 using JC.Core.Entities;
 using JC.Core.Repositories;
-using JC.Domain.Interfaces.Services;
+
 using System.Diagnostics.CodeAnalysis;
 
 namespace JC.Application.Services
@@ -20,10 +20,7 @@ namespace JC.Application.Services
 
         public ClienteService(IMapper mapper,
             IClienteRepository clienteRepository,
-            IArquivoRepository arquivoRepository,
-            IPerfilUsuarioRepository perfilUsuarioRepository,
-            IPerfilRepository perfilRepository,
-            IPedidoService pedidoService
+            IPerfilUsuarioRepository perfilUsuarioRepository
               )
         {
             _mapper = mapper;

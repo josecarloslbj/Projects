@@ -1,7 +1,8 @@
 ﻿using JC.Core.Base;
 using JC.Core.Dtos;
+using JC.Infrastructure.Shared.Authorization.Model;
 
-namespace JC.Domain.Services
+namespace JC.Application.Services
 {
     public interface IUsuarioService
     {
@@ -13,7 +14,11 @@ namespace JC.Domain.Services
 
         Task<PagedResultDTO<UsuarioDTO>> ObterTodos(PagedInputDTO filters);
 
-
         Task<UsuarioDTO> ObterUsuarioLoginSenha(string login, string senha);
+        AuthenticateResponse Authenticate(AuthenticateRequest model, string ipAddress);
+        AuthenticateResponse RefreshToken(string token, string ipAddress);
+        void RevokeToken(string token, string ipAddress);
+        IEnumerable<User> GetAll();
+        User GetById(int id);
     }
 }

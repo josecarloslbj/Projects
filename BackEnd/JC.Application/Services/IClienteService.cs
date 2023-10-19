@@ -2,7 +2,7 @@
 using JC.Core.Dtos;
 using JC.Core.Dtos.Filters;
 
-namespace JC.Domain.Interfaces.Services
+namespace JC.Application.Services
 {
     public interface IClienteService
     {

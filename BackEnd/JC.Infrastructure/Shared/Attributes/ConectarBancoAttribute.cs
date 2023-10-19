@@ -1,4 +1,4 @@
-﻿namespace JC.Infrastructure.Shared;
+﻿namespace JC.Infrastructure.Shared.Attributes;
 
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
 public class ConectarBancoAttribute : Attribute

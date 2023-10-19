@@ -1,5 +1,6 @@
 ﻿using JC.Infrastructure.Shared;
 using JC.Core.Dtos;
+using JC.Infrastructure.Shared.Attributes;
 
 namespace JC.Application.Services
 {

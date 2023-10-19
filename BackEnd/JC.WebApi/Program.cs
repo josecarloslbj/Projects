@@ -26,8 +26,9 @@ services.AddControllers(options =>
 });
 
 services
-    .AddInfrastructure(_con)
-    .AddApplication();
+    .AddApplication()
+    .AddInfrastructure(_con);
+    
 
 RegisterMappings.Register();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
@@ -60,6 +61,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.UseMiddleware<DbTransactionMiddleware>();
+app.UseMiddleware<JwtMiddleware>();
 app.UseMiddleware<ErrorHandlerMiddleware>();
 app.MapControllers();
 

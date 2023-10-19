@@ -35,8 +35,6 @@ public static class UploadUtils
                 string subDiretorio = DateTime.Now.ToString("yyyyMMddHHmmss");
                 string diretorio = $"{Constantes.DIRETORIO_IMAGENS}{subDiretorio}\\";
 
-                // diretorio = $"..\\..\\..\\StoreShop\\Frontend\\JC.Web\\apps\\app-store\\src\\assets\\images\\";
-
                 if (!Directory.Exists(diretorio))
                     Directory.CreateDirectory(diretorio);
 

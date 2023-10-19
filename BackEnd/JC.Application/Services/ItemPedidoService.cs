@@ -1,5 +1,5 @@
 ﻿using JC.Core.Dtos;
-using JC.Domain.Interfaces.Services;
+
 using System.Diagnostics.CodeAnalysis;
 
 namespace JC.Application.Services 

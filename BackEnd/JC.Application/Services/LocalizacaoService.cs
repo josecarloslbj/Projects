@@ -4,7 +4,7 @@ using JC.Core.Base;
 using JC.Core.Dtos.Filters;
 using JC.Core.Dtos;
 using JC.Core.Repositories;
-using JC.Domain.Interfaces.Services;
+
 using System.Diagnostics.CodeAnalysis;
 using JC.Core.Entities.Localizacao;
 

@@ -3,7 +3,7 @@ using JC.Core.Comuns;
 using JC.Core.Dtos;
 using JC.Core.Entities;
 using JC.Core.Repositories;
-using JC.Domain.Interfaces.Services;
+
 using Microsoft.AspNetCore.Http;
 using System.Diagnostics.CodeAnalysis;
 

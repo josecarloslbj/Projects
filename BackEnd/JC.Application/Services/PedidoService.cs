@@ -5,7 +5,6 @@ using JC.Core.Dtos;
 using JC.Core.Dtos.Filters;
 using JC.Core.Entities;
 using JC.Core.Repositories;
-using JC.Domain.Interfaces.Services;
 using System.Diagnostics.CodeAnalysis;
 using JC.Core.Comuns;
 

@@ -1,6 +1,6 @@
 ﻿using JC.Core.Entities;
 
-namespace JC.Domain.Interfaces.Services
+namespace JC.Application.Services
 {
     public interface ICategoriaPermissaoService
     {

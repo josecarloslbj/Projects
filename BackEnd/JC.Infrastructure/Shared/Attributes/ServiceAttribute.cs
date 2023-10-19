@@ -1,4 +1,4 @@
-﻿namespace JC.Infrastructure.Shared;
+﻿namespace JC.Infrastructure.Shared.Attributes;
 
 [AttributeUsage(AttributeTargets.Interface)]
 public class Service : Attribute

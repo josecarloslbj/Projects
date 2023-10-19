@@ -1,6 +1,6 @@
 ﻿using JC.Core.Dtos;
 
-namespace JC.Domain.Interfaces.Services
+namespace JC.Application.Services
 {
     public interface IItemPedidoService
     {

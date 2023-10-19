@@ -2,7 +2,7 @@
 using JC.Core.Entities;
 using JC.Core.Repositories;
 using JC.Infrastructure.Base;
-using JC.Infrastructure.Shared;
+using JC.Infrastructure.Shared.Uow;
 
 namespace JC.Infrastructure.Persistence.Repositories
 {

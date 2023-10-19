@@ -1,7 +1,7 @@
 ﻿using JC.Core.Dtos;
 using Microsoft.AspNetCore.Http;
 
-namespace JC.Domain.Interfaces.Services
+namespace JC.Application.Services
 {
     public interface IUploadService
     {

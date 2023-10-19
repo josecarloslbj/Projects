@@ -1,6 +1,8 @@
 ﻿using JC.Application.Comuns;
 using JC.Application.Exceptions;
-using JC.Infrastructure.Shared;
+using JC.Infrastructure.Shared.Attributes;
+using JC.Infrastructure.Shared.Attributes;
+using JC.Infrastructure.Shared.Uow;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
 using System.Data;

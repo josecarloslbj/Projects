@@ -3,7 +3,6 @@ using JC.Application.Exceptions;
 using JC.Core.Dtos;
 using JC.Core.Entities;
 using JC.Core.Repositories;
-using JC.Domain.Interfaces.Services;
 
 namespace JC.Application.Services
 {

@@ -1,8 +1,8 @@
 ﻿using MySql.Data.MySqlClient;
 using System.Data;
 
-namespace JC.Infrastructure.Shared;
-public class DbSession
+namespace JC.Infrastructure.Shared.Uow;
+public sealed class DbSession
 {
     private readonly IDbConnection _connection;
     private IDbTransaction _transaction;

@@ -3,7 +3,7 @@ using Dommel;
 using JC.Core.Entities;
 using JC.Core.Repositories;
 using JC.Infrastructure.Base;
-using JC.Infrastructure.Shared;
+using JC.Infrastructure.Shared.Uow;
 using System;
 using System.Collections.Generic;
 using System.Linq;
