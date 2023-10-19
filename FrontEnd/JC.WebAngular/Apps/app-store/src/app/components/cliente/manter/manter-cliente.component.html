@@ -1,0 +1,130 @@
+<div @fade>
+    <p-card>
+        <ng-template pTemplate="header">
+            <div class="card-header card-header-1 "
+                style="line-height: 35px; padding-left: 10px;   border-radius: 5px 5px 0 0">
+                <i class="pi pi-caret-right"></i> CADASTRAR CLIENTE
+            </div>
+        </ng-template>
+        <ng-template pTemplate="body">
+            <!-- Formulario -->
+            <form class="row">
+                <div class="col-12 pb-0 pt-0">
+                    <label for="inputSituacao" class="pr-5">Situação atual:</label>
+                    <p-inputSwitch id="inputSituacao" name="situacao" [(ngModel)]="record.ativo"
+                        [ngModelOptions]="{standalone: true}"></p-inputSwitch>
+
+                    <!-- <span *ngIf="record.ativo===true"  class="ml-4 mr-4 badge bg-success">Ativo</span>
+                    <span *ngIf="record.ativo===false" class="ml-4 mr-4 badge bg-danger">Inativo</span> -->
+                    <span style="position: absolute;">
+                        <p-badge *ngIf="record.ativo===true" value="Ativo" styleClass="ml-4 mr-4 mb-2"
+                            severity="success"></p-badge>
+                        <p-badge *ngIf="record.ativo===false" value="Inativo" styleClass="ml-4 mr-4 mb-2"
+                            severity="danger"></p-badge>
+                    </span>
+                </div> 
+                <div class="col-md-6 col-sm-12 pb-0 pt-0">
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="field-radiobutton">
+                                <p-radioButton name="tipoPessoa" value="1" [(ngModel)]="record.tipoPessoa"
+                                    inputId="pf"></p-radioButton>
+                                <label for="pf">Pessoa Física</label>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="field-radiobutton">
+                                <p-radioButton name="tipoPessoa" value="2" [(ngModel)]="record.tipoPessoa"
+                                    inputId="pj"></p-radioButton>
+                                <label for="pj">Pessoa Jurídica</label>
+                            </div>
+                        </div>
+
+                        <div class="col-12">
+                            <label *ngIf="record.tipoPessoa == 1" for="inputEmail3"
+                                class="col-sm-1 col-form-label">Nome</label>
+                            <label *ngIf="record.tipoPessoa == 2" for="inputEmail3"
+                                class="col-sm-2 col-form-label">Razão
+                                Social</label>
+                            <input type="text" class="form-control form-control-sm" id="inputEmail3"
+                                [(ngModel)]="record.nome" name="nome">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-sm-12 ">
+                    <label for="inputImagem" class="col-form-label">Imagem:</label>
+                    <!-- <p-fileUpload name="myfile[]" url="./upload.php" id="inputImagem" name="imagem"></p-fileUpload> -->
+                    <app-upload #appUpload></app-upload>
+                </div>
+
+                <div class="col-12 p-0">
+                    <div *ngIf="record.tipoPessoa == 1" class="col-2 input-cpf">
+                        <label for="inputCpf" class=" col-form-label pr-2">CPF:</label>
+                        <p-inputMask type="text" id="inputCpf" [(ngModel)]="record.cpj_cnpj" mask="999.999.999-99"
+                            name="cpf"></p-inputMask>
+                    </div>
+                    <div *ngIf="record.tipoPessoa == 2" class="col-2 input-cnpj">
+                        <label for="inputCNPJ" class="col-form-label pr-2">CNPJ:</label>
+                        <p-inputMask type="text" id="inputCNPJ" [(ngModel)]="record.cpj_cnpj" mask="99.999.999/9999-99"
+                            name="cnpj"></p-inputMask>
+                    </div>
+
+                     
+                </div>
+
+                <div class="col-12">
+                    <div class="row">
+                        <div class="col-md-3 cols-sm-12 ">
+                            <label for="inputCadastro" class="col-form-label">Cliente desde:</label>
+                            <input type="text" class="form-control form-control-sm" id="inputCadastro" disabled="true"
+                                [(ngModel)]="record.dataCadastro " name="dataCadastro">
+                        </div>               
+                    </div>
+                </div>
+                <!-- <div class="col-6">
+                    <div class="row">
+                        <div class="col-3">
+                            <label for="inputTelefone" class="col-sm-1 col-form-label">Telefone:</label>
+                            <p-inputMask [(ngModel)]="record.telefone" type="text" mask="(99) 9999-9999"
+                                id="inputTelefone" name="telefone"></p-inputMask>
+                        </div>
+                        <div class="col-3">
+                            <label for="inputCelular" class="col-sm-1 col-form-label">Celular:</label>
+                            <p-inputMask [(ngModel)]="record.celular" type="text" mask="(99) 99999-9999"
+                                id="inputCelular" name="celular"></p-inputMask>
+                        </div>
+                    </div>
+                </div> -->
+                <div class="col-md-6 cols-sm-12 ">
+                    <div class="row">
+                        <!-- <div class="col-6">
+                            <label for="inputEmail3" class="col-form-label">WebSite:</label>
+                            <input type="text" class="form-control form-control-sm" id="inputEmail3"
+                                [(ngModel)]="record.webSite" name="login">
+                        </div> -->
+                        <div class="col-6">
+                            <label for="inputEmail3" class="col-form-label">Email:</label>
+                            <input type="text" class="form-control form-control-sm" id="inputEmail3"
+                                [(ngModel)]="record.email" name="email">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <label for="inputDesc" class=" col-form-label">Observação:</label>
+                    <textarea class="form-control form-control-sm" id="inputDesc" rows="5"
+                        [(ngModel)]="record.observacao" name="descricao" aria-label="With textarea"></textarea>
+                </div>
+            </form>
+
+            <!-- Botoes -->
+            <div class="col-12">
+                <button pButton pRipple type="button" label="Salvar" icon="pi pi-check"
+                    class="p-button-raised p-button-success me-1" (click)="salvar_click();"></button>
+                <button pButton pRipple type="button" class="p-button-raised p-button-default me-1" label="Voltar"
+                    icon="pi pi-chevron-left" [routerLink]="['/cliente']">
+                </button>
+            </div>
+        </ng-template>
+    </p-card>
+</div>

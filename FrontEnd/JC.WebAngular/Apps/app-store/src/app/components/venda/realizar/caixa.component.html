@@ -1,0 +1,477 @@
+<div class="container">
+    <p-card #plnTable>
+        <div class="row  fundo-header">
+            <div class="col-12">
+                <div class="row">
+                    <div class="col-md-5 col-sm-12">
+                        <div class="nome-loja" style="cursor: pointer;" (click)="goHome();"
+                            alt="Ir página inicial do sistema"> <i class="pi pi-shopping-cart"></i> Loja da Amada</div>
+                    </div>
+                    <div class="col-md-6 col-sm-11 ">
+                        <div class="nome-caixa">
+                            <span class="destaque-caixa"> <i class="pi pi-user"></i> Caixa: </span> {{nome}}
+                            <span class="destaque-caixa"> <i class="pi pi-clock"></i> Data: </span> {{ time |
+                            date:'dd/MM/yyyy hh:mm:ss a' }}
+
+                        </div>
+                    </div>
+                    <div class="col-md-1 col-sm-12">
+                        <div class="" style="cursor: pointer;">
+                            <span class="pl-5 pointer" (click)="sair();"> <i class="pi pi-sign-out"
+                                    style="text-align: right;"></i> Sair </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row  fundo-corpo">
+            <div class="col-12">
+                <div class="header-nome-produto">
+                    <span *ngIf="codigoBarras == undefined">REALIZE A ABERTURA DO CAIXA</span>
+                    <span *ngIf="codigoBarras">Código: {{codigoBarras}}</span>
+                    <span *ngIf="codigoBarras == '' " class="produto-nome"> {{ product.nome}}</span>
+                    <span *ngIf="codigoBarras == '' " class="produto-unidade"> {{ product.unidadeMedida
+                        }}</span>
+                    <span *ngIf="codigoBarras == '' " class="produto-preco"> {{ product.preco |
+                        currency:'BRL'}}</span>
+                </div>
+            </div>
+        </div>
+        <div class="row fundo-corpo">
+
+            <div class="col-md-4 col-sm-12">
+                <div class="row" *ngIf="!displayModalFinalizarCompra">
+                    <div class="col-md-6 col-sm-12 ">
+                        <p-image [src]="getImageProduct()" alt="Image" [preview]="true" width="180"></p-image>
+                    </div>
+                    <div class="col-md-6 col-sm-12">
+                        <div class="col-12 mb-0  mt-0 pt-0 pb-0">
+                            <label for="inputCodigo" class="col-sm-12 col-form-label">Código de
+                                Barras:</label>
+                            <div class="col-sm-12">
+                                <input type="text" class="form-control form-control-sm" id="inputCodigo" #inputCodigo
+                                    [(ngModel)]="codigoBarras" autofocus="true" name="codigo"
+                                    (keydown.enter)="search($event.target)">
+                            </div>
+                        </div>
+                        <div class="col-12 mb-0  mt-0 pt-0 pb-0">
+                            <label for="inputNome" class="col-sm-12 col-form-label">Descrição
+                                :</label>
+                            <div class="col-sm-12">
+                                <input type="text" class="form-control form-control-sm" id="inputValor"
+                                    [ngModel]="product.nome" name="inputNome" disabled>
+                            </div>
+                        </div>
+                        <div class="col-12 mb-0  mt-0 pt-0 pb-0">
+                            <label for="inputValor" class="col-sm-12 col-form-label">Valor
+                                Unitário:</label>
+                            <div class="col-sm-12">
+                                <input type="text" class="form-control form-control-sm" id="inputValor"
+                                    [ngModel]="product.preco | currency:'BRL'" name="valorunidade" disabled>
+                            </div>
+                        </div>
+                        <div class="col-12 mb-0  mt-0 pt-0 pb-0 ">
+                            <label for="inputTotal" class="col-sm-12 col-form-label">Total do
+                                Item:</label>
+                            <div class="col-sm-12">
+                                <input type="text" class="form-control form-control-sm" id="inputTotal"
+                                    [(ngModel)]="product.qtde" name="total" disabled>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8 col-sm-12">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="title-table">Lista de produtos <span>{{getTotalItens()}}
+                                itens</span></div>
+                        <span class="sub-total">
+                            SUBTOTAL: {{ getSubTotal() | currency:'BRL'}}
+                        </span>
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <p-table [value]="products" dataKey="id" editMode="row" [scrollable]="true"
+                            scrollHeight="400px">
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th style="width:15%">Nro Item</th>
+                                    <th style="width:10%">Código</th>
+                                    <th style="width:40%">Descrição</th>
+                                    <th style="width:10%">Qtde</th>
+                                    <th style="width:13%">Vlr. Unit.</th>
+                                    <th style="width:13%">Desconto</th>
+                                    <th style="width:10%">Total</th>
+                                    <th style="width:2%"></th>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-product let-editing="editing" let-ri="rowIndex">
+                                <tr [pEditableRow]="product" [ngClass]="{'item-removido': product.removido == true}">
+                                    <td>
+                                        {{product.ordem}}
+                                    </td>
+                                    <td>
+                                        {{product.codigo}}
+                                    </td>
+                                    <td>
+                                        {{product.nome}}
+                                    </td>
+                                    <td>
+                                        <p-cellEditor>
+                                            <ng-template pTemplate="input">
+                                                <p-inputNumber [(ngModel)]="product.qtde" [min]="1" [max]="100"
+                                                    [showButtons]="true"></p-inputNumber>
+                                            </ng-template>
+                                            <ng-template pTemplate="output">
+                                                {{product.qtde}}
+                                            </ng-template>
+                                        </p-cellEditor>
+                                    </td>
+                                    <td>
+                                        {{product.preco | currency: 'BRL'}}
+                                    </td>
+                                    <td>
+                                        <p-cellEditor>
+                                            <ng-template pTemplate="input">
+                                                <p-inputNumber [(ngModel)]="product.desconto"
+                                                    class="p-inputnumber moeda" locale="pt-BR" mode="currency"
+                                                    currency="BRL" [minFractionDigits]="2" [maxFractionDigits]="2"
+                                                    id="inputDesconto" name="'desconto"
+                                                    [ngModelOptions]="{standalone: true}"></p-inputNumber>
+                                            </ng-template>
+                                            <ng-template pTemplate="output">
+                                                {{product.desconto | currency: 'BRL'}}
+                                            </ng-template>
+                                        </p-cellEditor>
+                                    </td>
+                                    <td>
+                                        {{product.total | currency: 'BRL'}}
+                                    </td>
+                                    <td>
+                                        <div *ngIf="!product.removido"
+                                            class="flex align-items-center justify-content-center gap-2">
+                                            <button *ngIf="!editing" pButton pRipple type="button" pInitEditableRow
+                                                icon="pi pi-pencil" (click)="onRowEditInit(product)"
+                                                class="p-button-rounded p-button-text"></button>
+                                            <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow
+                                                icon="pi pi-check" (click)="onRowEditSave(product)"
+                                                class="p-button-rounded p-button-text p-button-success mr-2"></button>
+
+
+                                            <button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow
+                                                icon="pi pi-times" (click)="onRowEditCancel(product, ri)"
+                                                class="p-button-rounded p-button-text p-button-danger"></button>
+
+                                            <button *ngIf="!editing" pButton pRipple type="button" pCancelEditableRow
+                                                icon="pi pi-times" style="color: red;"
+                                                (click)="deleteConfirm($event,product)"
+                                                class="p-button-rounded p-button-text p-button-danger"></button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="row fundo-corpo">
+            <div class="col-12">
+                <div class="footer-vendawww">
+                    <button pButton pRipple type="button" icon="pi pi-check" class="p-button-rounded p-button-info"
+                        (click)="showFinalizarCompra()" label="F1 - Finalizar Compra"></button>
+                     <!-- <button pButton pRipple type="button" icon="pi pi-users" class="p-button-rounded p-button-success"
+                    label="F2 - Identificar Cliente" ></button>  -->
+                    <button pButton pRipple type="button" icon="pi pi-search" class="p-button-rounded p-button-help"
+                        label="F2 - Pesquisar Produto" (click)="showPesquisarProduto()"></button>
+                    <button pButton pRipple type="button" icon="pi pi-exclamation-triangle" class="p-button-rounded p-button-danger"
+                        label="F4 - Cancelar Venda" (click)="showCancelarCompra()"></button>
+
+                        <button pButton pRipple type="button" icon="pi pi-dollar" class="p-button-rounded p-button-success"
+                        label="F8 - Abrir/Fechar Caixa" (click)="showAbrirFecharCaixa()"></button>
+                </div>
+            </div>
+        </div>
+    </p-card>
+</div>
+
+
+
+<p-confirmPopup [showTransitionOptions]="'200ms'" [hideTransitionOptions]="'400ms'"></p-confirmPopup>
+<p-blockUI [blocked]="loading" [target]="plnTable">
+    <i class="pi pi-spin pi-spinner" style="font-size: 3rem"></i>
+</p-blockUI>
+
+<p-dialog [(visible)]="displayModalFinalizarCompra" [transitionOptions]="'300ms'" [maximizable]="true" [modal]="true">
+    <ng-template pTemplate="header">
+        FINALIZAR VENDA <span class="finalizar-compra-valor-total d-none d-sm-none d-md-block">Valor total da compra {{
+            getSubTotalFinalizarVenda()
+            | currency:'BRL'
+            }}</span>
+    </ng-template>
+    <ng-template pTemplate="body">
+        <div class="row">
+            <div class="col-md-6 col-sm-12 pt-3">
+                <div class="cupom-fiscal p-2" style="border-radius: 5px;">
+                    <div class="cupom-fiscal pt-2" style="border-bottom: 1px dashed black;"></div>
+                    <div style="width: 100%;">
+                        <span class="text-left">
+                            {{ time | date:'dd/MM/yyyy HH:mm' }} Loja da Amada 54.485.265/0001-56
+                        </span>
+                        <span style="float: right;"> Caixa: {{nome}} </span>
+                    </div>
+
+                    <ng-container *ngIf="cliente?.nome">
+                        <div class="cupom-fiscal pt-2" style="border-bottom: 1px dashed black;"></div>
+                        <div class="text-left">Cliente: {{cliente.nome}}</div>
+                        <div class="text-left">CPF/CNPJ: {{cliente.cpj_cnpj}}</div>
+                    </ng-container>
+                    <div class="cupom-fiscal pt-2" style="border-bottom: 1px dashed black;"></div>
+                    <div class="text-center">**** CUPOM FISCAL ****</div>
+                    <div class="cupom-fiscal pt-2" style="border-bottom: 1px dashed black;"></div>
+
+                    <p-table [value]="produtosFinalizaVenda" class="cupom-fiscal">
+                        <ng-template pTemplate="header">
+                            <tr class="cupom-fiscal">
+                                <th class="text-left p-0">Item</th>
+                                <th class="text-left p-0">Un.</th>
+                                <th class="text-center p-0">Qtde.</th>
+                                <th class="text-right p-0">Preço</th>
+                                <th class="text-right p-0">Desconto</th>
+                                <th class="text-right p-0">Total</th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-product>
+                            <tr class="cupom-fiscal">
+                                <td class="text-left">{{product.nome}}</td>
+                                <td class="text-left">{{product.unidadeMedida}}</td>
+                                <td class="text-center">{{product.qtde}}</td>
+                                <td class="text-right">{{product.preco | currency:'BRL'}}</td>
+                                <td class="text-right">{{product.desconto| currency:'BRL'}}</td>
+                                <td class="text-right">{{product.total| currency:'BRL'}}</td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
+
+                    <div class="cupom-fiscal pb-2" style="border-top: 1px dashed black;"></div>
+                    <div class="text-right">
+                        <span *ngIf="valorDesconto!>0">SUBTOTAL:</span>
+                        <span *ngIf="valorDesconto==0">TOTAL:</span>
+                        {{ getSubTotalFinalizarVenda() | currency:'BRL' }}
+                    </div>
+                    <ng-container *ngIf="valorDesconto!>0">
+                        <div class="cupom-fiscal pb-2" style="border-top: 1px dashed black;"></div>
+                        <div class="text-right">Desconto: {{ valorDesconto | currency:'BRL' }}</div>
+                    </ng-container>
+                    <div class="text-right" *ngIf="valorDesconto!>0">
+                        <div class="cupom-fiscal pb-2" style="border-top: 1px dashed black;"></div>
+                        <span>TOTAL:</span> {{ getSubTotalFinalizarVenda() | currency:'BRL' }}
+                    </div>
+                    <div class="cupom-fiscal pb-2" style="border-top: 1px dashed black;"></div>
+                    <div class="text-right" *ngIf="selectedFormaPagto" style="text-transform: uppercase;">
+                        Forma de pagamento {{selectedFormaPagto }}
+                        <span *ngIf="valorRecebido! > 0 && selectedFormaPagto == 'Dinheiro'">{{ valorRecebido |
+                            currency:'BRL' }} </span>
+                        <div *ngIf="valorTroco! > 0 && selectedFormaPagto == 'Dinheiro'"
+                            style="text-transform: uppercase;">TROCO: {{ valorTroco | currency:'BRL' }} </div>
+                    </div>
+                    <div class="cupom-fiscal pb-2" style="border-top: 1px dashed black;" *ngIf="observacao">
+                        {{observacao}}
+                    </div>
+                    <div class="cupom-fiscal pb-2" style="border-top: 1px dashed black;"></div>
+                    <div class="text-center">Identificação do cupom fiscal {{this.pedido.id}}-{{guid}}</div>
+                    <div class="cupom-fiscal"></div>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-12">
+                <div class="mt-2 mb-2">
+                    <div class="grid p-fluid">
+                        <!-- <div class="col-12 md:col-12 sm:col-12">
+                            <label>Identificar cliente:</label>
+                            <div class="p-inputgroup">
+                                <input type="text" pInputText placeholder="Pesquisar Cliente" [(ngModel)]="cliente.nome"
+                                    disabled="true">
+                                <button type="button" pButton pRipple icon="pi pi-search" styleClass="p-button-warn"
+                                    (click)="op.toggle($event)"></button>
+                            </div>
+                        </div> -->
+                        <div class="col-12 md:col-12 sm:col-12">
+                            <label>Identificar cliente:</label>
+                            <div class="p-inputgroup">
+                                <input type="text" pInputText placeholder="Pesquisar Cliente" [(ngModel)]="cliente.nome"
+                                    disabled="true">
+                                <button type="button" pButton pRipple icon="pi pi-search" styleClass="p-button-warn"
+                                    (click)="pesquisarCliente($event)"></button>
+                                    <button *ngIf="cliente.id >0" type="button" pButton pRipple icon="pi pi-times" class="p-button-danger"
+                                    (click)="removerCliente($event)"></button>
+                            </div>
+                        </div>
+                        <div class="col-12 md:col-12 sm:col-12">
+                            <label>Forma de Pagamento:</label>
+                            <div class="field-radiobutton">
+                                <p-radioButton name="formaDinheiro" value="DINHEIRO" [(ngModel)]="selectedFormaPagto"
+                                    inputId="formaDinheiro"></p-radioButton>
+                                <label for="formaDinheiro">Dinheiro</label>
+                            </div>
+                            <div class="field-radiobutton">
+                                <p-radioButton name="formaDebito" value="CARTAO_DEBITO" [(ngModel)]="selectedFormaPagto"
+                                    inputId="formaDebito"></p-radioButton>
+                                <label for="formaDebito">Cartão Débito</label>
+                            </div>
+                            <div class="field-radiobutton">
+                                <p-radioButton name="formaCredito" value="CARTAO_CREDITO"
+                                    [(ngModel)]="selectedFormaPagto" inputId="formaCredito"></p-radioButton>
+                                <label for="formaCredito">Cartão Crédito</label>
+                            </div>
+                            <div class="field-radiobutton">
+                                <p-radioButton name="formaPix" value="PIX" [(ngModel)]="selectedFormaPagto"
+                                    inputId="formaPix"></p-radioButton>
+                                <label for="formaPix">PIX</label>
+                            </div>
+                            <div class="field-radiobutton">
+                                <p-radioButton name="formaCrediario" value="CREDIARIO" [(ngModel)]="selectedFormaPagto"
+                                    inputId="formaCrediario"></p-radioButton>
+                                <label for="formaCrediario">Pagto. informal a prazo</label>
+                            </div>
+                            <div class="field-radiobutton">
+                                <p-radioButton name="formaTED" value="TRANSFERENCIA_BANCARIA"
+                                    [(ngModel)]="selectedFormaPagto" inputId="formaTED"></p-radioButton>
+                                <label for="formaTED">Transferência bancária</label>
+                            </div>
+                        </div>
+                        <!-- <div class="col-12 md:col-12 sm:col-12">
+                            Forma de Pagamento:
+                            <div class="field-radiobutton">
+                                <p-radioButton name="groupname" value="Dinheiro" label="Dinheiro"
+                                    [(ngModel)]="selectedFormaPagto" class="m-2"></p-radioButton>
+                                <p-radioButton name="groupname" value="Cartão" label="Cartão De Débito"
+                                    [(ngModel)]="selectedFormaPagto" class="m-2"></p-radioButton>
+                                <p-radioButton name="groupname" value="CartãoCredito" label="Cartão De Crédito"
+                                    [(ngModel)]="selectedFormaPagto" class="m-2"></p-radioButton>
+                                <p-radioButton name="groupname" value="PIX" label="PIX" [(ngModel)]="selectedFormaPagto"
+                                    class="m-2"></p-radioButton>
+                                <p-radioButton name="groupname" value="Crediário" label="Pagto. informal a prazo"
+                                    [(ngModel)]="selectedFormaPagto" class="m-2"></p-radioButton>
+                            </div>
+                        </div> -->
+                    </div>
+                    <div class="grid p-fluid">
+                        <div class="field col-12 md:col-3">
+                            <label for="currency-us">Valor Total:</label>
+                            <p-inputNumber inputId="currency-us" mode="currency" currency="BRL" locale="pt-BR"
+                                [disabled]="true" [ngModel]="this.getSubTotalFinalizarVenda()">
+                            </p-inputNumber>
+                        </div>
+                        <div class="field col-12 md:col-3">
+                            <label for="currency-germany">Valor Recebido:</label>
+                            <p-inputNumber #vlrRecebido mode="currency" inputId="currency-Recebido" currency="BRL"
+                                placeholder="0,00" locale="pt-BR" [(ngModel)]="valorRecebido"
+                                (ngModelChange)="onChangeRecebimento($event)">
+                            </p-inputNumber>
+                            <!-- <input  #vlrRecebido  [(ngModel)]="valorRecebido" 
+                            (ngModelChange)="onChangeRecebimento($event)"> -->
+                        </div>
+                        <div class="field col-12 md:col-3">
+                            <label for="currency-germany">Desconto:</label>
+                            <p-inputNumber mode="currency" inputId="currency-Desconto" currency="BRL" placeholder="0,00"
+                                locale="pt-BR" [(ngModel)]="valorDesconto" (ngModelChange)="onChangeDesconto($event)">
+                            </p-inputNumber>
+                        </div>
+                        <div class="field col-12 md:col-3">
+                            <label for="currency-india">Troco:</label>
+                            <p-inputNumber mode="currency" inputId="currency-india" currency="BRL" locale="pt-BR"
+                                [disabled]="true" [(ngModel)]="valorTroco">
+                            </p-inputNumber>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    Observação:
+                    <textarea pInputTextarea style="width: 100%;" [(ngModel)]="observacao"></textarea>
+                </div>
+            </div>
+        </div>
+
+    </ng-template>
+    <ng-template pTemplate="footer">
+        <div style="text-align: center;" class="pt-4">
+            <button pButton type="button" label="Concluir Venda" [loading]="executandoVenda" icon="pi pi-check" (click)="concluirVenda($event);"
+                style="text-align: center;" class="p-button p-button-info"></button>
+        </div>
+    </ng-template>
+</p-dialog>
+
+<p-dialog [(visible)]="displayModalCancelarCompra" [transitionOptions]="'300ms'" [maximizable]="true" [modal]="true"
+    [style]="{width: '50vw'}">
+    <ng-template pTemplate="header">
+        CANCELAR COMPRA
+    </ng-template>
+    <ng-template pTemplate="body">
+        <div class="mt-2 mb-2">
+            <div class="grid p-fluid">
+                <div class="col-12 md:col-12">
+                    <div class="p-inputgroup">
+                        <input type="text" pInputText placeholder="Pesquisar Cliente" [(ngModel)]="cliente.nome"
+                            disabled="true">
+                        <button type="button" pButton pRipple icon="pi pi-search" styleClass="p-button-warn"
+                            (click)="op.toggle($event)"></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ng-template>
+    <ng-template pTemplate="footer">
+        <div style="text-align: center;" class="pt-4">
+            <button pButton type="button" label="Concluir Venda" icon="pi pi-check" (click)="concluirVenda($event);"
+                style="text-align: center;" class="p-button p-button-info"></button>
+        </div>
+    </ng-template>
+</p-dialog>
+
+<p-overlayPanel #op [showCloseIcon]="true" [style]="{width: '450px'}">
+    <ng-template pTemplate>
+        <p-table [value]="clientes" selectionMode="single" [(selection)]="cliente"
+            (onRowSelect)="onRowSelect($event,op)" [paginator]="true" [rows]="5" responsiveLayout="scroll">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th pSortableColumn="nome">Nome<p-sortIcon field="nome"></p-sortIcon></th>
+                    <th>Foto</th>
+                    <th pSortableColumn="cPF_CNPJ">CPF <p-sortIcon field="cPF_CNPJ"></p-sortIcon></th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-rowData let-product>
+                <tr [pSelectableRow]="rowData">
+                    <td>{{product.nome}}</td>
+                    <td><img src="assets/images/user.png" style="max-width: 32px;" [alt]="product.image"
+                            class="product-image" /></td>
+                    <td>539.755.090-66</td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </ng-template>
+</p-overlayPanel>
+
+<p-toast key="caixa" position="bottom-right" [showTransitionOptions]="'500ms'" [hideTransitionOptions]="'1000ms'">
+</p-toast>
+
+
+
+<p-dialog header="Venda realizada com sucesso!" [(visible)]="displayImprimirCupom" [modal]="true"  [showTransitionOptions]="'500ms'"
+    [hideTransitionOptions]="'1000ms'"> 
+    <div class="p-5">          
+        <p class="text-center">Cupom: {{this.pedido.id}}-{{guid}}</p>
+        <p class="text-center">Deseja imprimir o cupom fiscal?</p>
+    </div>
+    <ng-template pTemplate="footer">
+        <div class="mt-3 mb-0">      
+        <button pButton type="button" icon="pi pi-print" label="Sim, imprimir e concluir a venda" class="p-button-secondary"
+            (click)="ConcluirComCupom();"></button>
+        <button pButton type="button" icon="pi pi-check" label="Não, apenas concluir a venda" class="p-button-primary"
+            (click)="ConcluirSemCupom();"></button>
+        </div>
+    </ng-template>
+</p-dialog>

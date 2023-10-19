@@ -1,0 +1,97 @@
+<div @fade>
+    <p-card #plnForm>
+        <ng-template pTemplate="header">
+            <div class="card-header card-header-1 "
+                style="line-height: 35px; padding-left: 10px;   border-radius: 5px 5px 0 0">
+                <i class="pi pi-caret-right"></i> {{tituloPagina}}
+            </div>
+        </ng-template>
+        <ng-template pTemplate="body">
+            <!-- Formulario -->
+            <form class="row">
+                <!-- <div class="col-md-12 col-sm-12">
+                    <label for="inputSituacao" class="pr-5">Situação atual:</label>
+                    <p-inputswitch id="inputSituacao" name="situacao"
+                        [(ngModel)]="record.ativo"
+                        [ngModelOptions]="{standalone: true}"></p-inputswitch>
+
+                    <span style="position: absolute;">
+                        <p-badge *ngIf="record.ativo===true" value="Ativo"
+                            styleClass="ml-4 mr-4 mb-2"
+                            severity="success"></p-badge>
+                        <p-badge *ngIf="record.ativo===false" value="Inativo"
+                            styleClass="ml-4 mr-4 mb-2"
+                            severity="danger"></p-badge>
+                    </span>
+                </div> -->
+
+                <div class="col-md-12 col-sm-12">
+                    <div class="row">
+                        <div class="col-md-4 col-sm-12">
+                            <label for="pais" class="col-sm-1 col-form-label">Pais:</label>
+                            <div class="col-sm-12">
+                                <p-dropdown id="pais" [autoDisplayFirst]="false"
+                                    [options]="paises"
+                                    [(ngModel)]="selectedPais"
+                                    [ngModelOptions]="{standalone: true}"
+                                    optionLabel="descricao" dataKey="id"
+                                    [filter]="true" filterBy="nome"
+                                    [showClear]="true"
+                                    (onChange)="pais_onChange($event.value)"></p-dropdown>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-12">
+                            <label for="estado" class="col-sm-1 col-form-label">Estado:</label>
+                            <div class="col-sm-12">
+                                <p-dropdown id="estado"
+                                    [autoDisplayFirst]="false"
+                                    [options]="estados"
+                                    [(ngModel)]="selectedEstado"
+                                    [ngModelOptions]="{standalone: true}"
+                                    optionLabel="nome" dataKey="id"
+                                    [filter]="true" filterBy="nome"
+                                    [showClear]="true"
+                                    (onChange)="estado_onChange($event.value)"></p-dropdown>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-12">
+                            <label for="cidade" class="col-sm-1 col-form-label">Cidade:</label>
+                            <div class="col-sm-12">
+                                <p-dropdown id="cidade"
+                                    [autoDisplayFirst]="false"
+                                    [options]="cidades"
+                                    [(ngModel)]="selectedCidade"
+                                    [ngModelOptions]="{standalone: true}"
+                                    optionLabel="nome" dataKey="id"
+                                    [filter]="true" filterBy="nome"
+                                    [showClear]="true"
+                                    [virtualScroll]="true"
+                                    [virtualScrollItemSize]="38"
+                                    (onChange)="cidade_onChange($event.value)"></p-dropdown>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12 col-sm-12">
+                    <label for="inputNome" class="col-form-label">Nome:</label>
+                    <input type="text" class="form-control form-control-sm"
+                        id="inputNome" [(ngModel)]="record.nome"
+                        name="nome">
+                </div>
+
+            </form>
+
+            <!-- Botoes -->
+            <div class="col-12">
+                <button pButton pRipple type="button" label="Salvar"
+                    icon="pi pi-check"
+                    class="p-button-raised p-button-success me-1"
+                    (click)="salvar_click();"></button>
+                <button pButton pRipple type="button"
+                    class="p-button-raised p-button-default me-1" label="Voltar"
+                    icon="pi pi-chevron-left" (click)="voltar_click();">
+                </button>
+            </div>
+        </ng-template>
+    </p-card>
+</div>

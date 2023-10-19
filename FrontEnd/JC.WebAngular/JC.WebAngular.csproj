@@ -4,8 +4,11 @@
     <TargetFramework>net7.0</TargetFramework>
     <Nullable>enable</Nullable>
     <IsPackable>false</IsPackable>
-    <SpaRoot>ClientApp\</SpaRoot>
-    <SpaProxyServerUrl>https://localhost:44409</SpaProxyServerUrl>
+   
+	<SpaRoot>Apps\app-store\</SpaRoot>
+	<SpaProxyServerUrl>https://localhost:4200</SpaProxyServerUrl>
+	<!-- <SpaRoot>ClientApp\</SpaRoot> -->
+    <!-- <SpaProxyServerUrl>https://localhost:44409</SpaProxyServerUrl> -->
     <SpaProxyLaunchCommand>npm start</SpaProxyLaunchCommand>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>

@@ -1,0 +1,109 @@
+<!-- .color1 { #68b2f8 };
+.color2 { #506ee5 };
+.color3 { #7037cd };
+.color4 { #651f71 };
+.color5 { #1d0c20 }; -->
+
+<div @fade>   
+
+  <div class="row">
+    <p-card class="hidden">
+      <ng-template pTemplate="header">
+        <div class="card-header card-header-1 "
+          style="line-height: 35px; padding-left: 10px;   border-radius: 5px 5px 0 0">
+          <i class="pi pi-caret-right"></i> PAIS
+        </div>
+      </ng-template>
+
+      <div class="">
+        <form>
+          <div class="row mb-1">
+            <label for="inputEmail3" class="col-auto col-form-label">Nome:</label>
+            <div class="col-sm-3">
+              <input type="text" class="form-control form-control-sm" id="inputEmail3">
+            </div>
+            <div class="col-auto">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="gridCheck1">
+                <label class="form-check-label" for="gridCheck1">
+                  Incluir Inativos
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div class="">
+            <button pButton pRipple type="button" label="Novo" icon="pi pi-plus"
+              class="p-button-raised p-button-default me-1" [routerLink]="['/pais/0']"></button>
+            <!-- <button pButton pRipple type="button" label="Pesquisar" icon="pi pi-search"
+            class="p-button-raised p-button-primary me-1" [loading]="loading" (click)="pesquisar();"></button> -->
+          </div>
+        </form>
+      </div>
+    </p-card>
+    <div class="m-2 hidden"></div>
+
+
+
+    <p-card class="m-2" #plnTable>
+      <ng-template pTemplate="header">
+        <div class="card-header card-header-1 "
+          style="line-height: 35px; padding-left: 10px;   border-radius: 5px 5px 0 0">
+          <i class="pi pi-table"></i> LISTAGEM DE PAISES - <span (click)="tableFilterAvancado()">ver filtros avançados
+          </span>
+          <button pButton pRipple type="button" label="Novo" icon="pi pi-plus"
+            class="p-button-rounded p-button-help   " [routerLink]="['/pais/0']"></button>
+        </div>        
+      </ng-template>
+
+      <p-table [value]="paises" styleClass="p-datatable-striped p-datatable-gridlines" [lazy]="true"
+        (onLazyLoad)="loadCustomers($event)" responsiveLayout="scroll" dataKey="id" [selection]="selectedCustomers"
+        (selectionChange)="onSelectionChange($event)" [selectAll]="selectAll"
+        (selectAllChange)="onSelectAllChange($event)" [paginator]="true" [rows]="10" [totalRecords]="totalRecords"
+        sortField="id" [globalFilterFields]="['id','nome', 'descricao']">
+        >
+        <ng-template pTemplate="header">
+          <tr>
+            <th style="width: 10%;" pSortableColumn="id">Código <p-sortIcon field="id"></p-sortIcon>
+            </th>
+            <th style="width: 30%;" pSortableColumn="nome">Nome <p-sortIcon field="nome"></p-sortIcon>
+            </th>
+            <th pSortableColumn="descricao">Descrição <p-sortIcon field="descricao"></p-sortIcon>
+            </th>
+            <th style="width: 8%;">Ação</th>
+          </tr>
+          <tr *ngIf="tableFilter">
+            <th>
+              <p-columnFilter type="text" field="id"[matchModeOptions]="matchModeOptions" [matchMode]="'custom-equals'"
+                locale="pt-br"></p-columnFilter>
+            </th>
+            <th>
+              <p-columnFilter type="text" field="nome"  [matchModeOptions]="matchModeOptions"></p-columnFilter>
+            </th>
+            <th>
+              <p-columnFilter type="text" field="descricao" [matchModeOptions]="matchModeOptions"></p-columnFilter>
+            </th>
+            <th></th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-perfil>
+          <tr>
+            <td>{{perfil.id}}</td>
+            <td>{{perfil.nome}}</td>
+            <td>{{perfil.descricao}}</td>
+            <td>
+              <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-warning   p-button-text  mr-2"
+                (click)="edit(perfil)"></button>
+              <button pButton pRipple icon="pi pi-trash" class="p-button-rounded  p-button-danger  p-button-text"
+                (click)="deleteConfirm($event,perfil)"></button>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </p-card>
+  </div>
+
+  <p-blockUI [blocked]="loading" [target]="plnTable">
+    <!-- <i class="pi pi-lock" style="font-size: 3rem"></i> -->
+  </p-blockUI>
+  <p-confirmPopup [showTransitionOptions]="'200ms'" [hideTransitionOptions]="'400ms'"></p-confirmPopup>

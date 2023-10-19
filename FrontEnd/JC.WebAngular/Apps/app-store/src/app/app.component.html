@@ -1,0 +1,191 @@
+<!-- 
+  <nav class="navbar navbar-expand-lg" style="background-color: #343a40; height:60px " *ngIf="mostrarMenu" >
+    <div class="container-fluid">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo03"
+        aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <a class="navbar-brand" href="#">
+        <img src="../assets/img/logomarca.png" style="max-width: 64px;" />
+      </a>
+      <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" routerLink="">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/usuarios">Usuários</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/perfis">Perfil</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/login">Login</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link disabled" routerLink="/alunos">Alunos</a>
+          </li>
+        </ul>
+        <form class="d-flex" role="search">
+          <input class="form-control me-2" type="search" placeholder="Pesquisar" aria-label="Search">
+          <button class="btn btn-outline-warning" type="submit">Pesquisar</button>
+        </form>
+      </div>
+    </div>
+  </nav>
+
+<div class="row"  style="margin: 0;" id="auto10" >   
+      <div class="col-sm-2" style="background-color: #343a40; height: auto; padding: 0; padding-bottom: 10px;" *ngIf="mostrarMenu" >
+        <div class="">
+        <nav class="sidebar card py-2 mb-4"  style="background-color: #343a40; color: aliceblue;"  >
+          <ul class="nav flex-column">
+            <li class="nav-item">              
+              <a class="nav-link" routerLink="/perfis">Perfil</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#"> Submenu links <b class="float-end">&raquo;</b> </a>
+              <ul class="submenu dropdown-menu">
+                <li><a class="nav-link" href="#">Submenu item 1 </a></li>
+                  <li><a class="nav-link" href="#">Submenu item 2 </a></li>
+                  <li><a class="nav-link" href="#">Submenu item 3 </a>
+                  </li>
+              </ul>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#"> Treeview category <b class="float-end">&raquo;</b> </a>
+              <ul class="submenu dropdown-menu">
+                <li><a class="nav-link" href="#">Submenu item 1 </a></li>
+                  <li><a class="nav-link" href="#">Submenu item 2 </a></li>
+                  <li><a class="nav-link" href="#">Submenu item 3 <b class="float-end">&raquo;</b> </a>
+                    <ul class="submenu dropdown-menu">
+                      <li><a class="nav-link" href="#">Multi level 1</a></li>
+                      <li><a class="nav-link" href="#">Multi level 2</a></li>
+                      <li><a class="nav-link" href="#">Multi level 3</a></li>
+                  </ul>
+                  </li>
+              </ul>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#"> Another page </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#"> Demo link </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+      <div class="col-sm-10" style="padding: 0;">
+      
+        <div class="">
+        <div class="m-2">
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+  </div>
+</div>
+<script> 
+  document.addEventListener("DOMContentLoaded", function(){
+ // make it as accordion for smaller screens
+if (window.innerWidth < 992) {
+
+	document.querySelectorAll('.sidebar .nav-link').forEach(function(element){
+
+		element.addEventListener('click', function (e) {
+
+			let nextEl = element.nextElementSibling;
+			let parentEl  = element.parentElement;
+			let allSubmenus_array =	parentEl.querySelectorAll('.submenu');
+
+			if(nextEl && nextEl.classList.contains('submenu')) {	
+				e.preventDefault();	
+				if(nextEl.style.display == 'block'){
+					nextEl.style.display = 'none';
+				} else {
+					nextEl.style.display = 'block';
+				}
+			}
+		});
+	})
+}
+// end if innerWidth
+}); 
+// DOMContentLoaded  end
+</script> -->
+
+<router-outlet>
+  <p-toast key="notification" position="top-right"></p-toast>
+</router-outlet>
+
+<p-toast position="{{toastPosition}}" [showTransitionOptions]="'500ms'" [hideTransitionOptions]="'1000ms'">
+  <ng-template let-message pTemplate="message">
+    <div class="flex flex-column" style="flex: 1">
+      <div class="text-center">
+        <div class="row">
+          <div class="col-1" style="max-height: 50px;">
+            <div class="svg-box" *ngIf="message.severity==='success'">
+              <svg class="circular green-stroke">
+                <circle class="path" cx="45" cy="45" r="30" fill="none" stroke-width="3" stroke-miterlimit="10" />
+              </svg>
+              <svg class="checkmark green-stroke">
+                <g transform="matrix(0.79961,8.65821e-32,8.39584e-32,0.79961,-489.57,-205.679)">
+                  <path class="checkmark__check" fill="none" d="M616.306,283.025L634.087,300.805L673.361,261.53" />
+                </g>
+              </svg>
+            </div>
+
+            <div class="svg-box" *ngIf="message.severity==='error'">
+              <svg class="circular red-stroke">
+                <circle class="path" cx="45" cy="45" r="30" fill="none" stroke-width="5" stroke-miterlimit="10" />
+              </svg>
+              <svg class="cross red-stroke">
+                <g transform="matrix(0.79961,8.65821e-32,8.39584e-32,0.79961,-502.652,-204.518)">
+                  <path class="first-line" d="M634.087,300.805L673.361,261.53" fill="none" />
+                </g>
+                <g transform="matrix(-1.28587e-16,-0.79961,0.79961,-1.28587e-16,-204.752,543.031)">
+                  <path class="second-line" d="M634.087,300.805L673.361,261.53" />
+                </g>
+              </svg>
+            </div>
+
+            <div class="svg-box" *ngIf="message.severity==='warn'">
+              <svg class="circular yellow-stroke">
+                <circle class="path" cx="45" cy="45" r="30" fill="none" stroke-width="5" stroke-miterlimit="10" />
+              </svg>
+              <svg class="alert-sign yellow-stroke">
+                <g transform="matrix(1,0,0,1,-615.516,-257.346)">
+                  <g transform="matrix(0.56541,-0.56541,0.56541,0.56541,93.7153,495.69)">
+                    <path class="line" d="M634.087,300.805L673.361,261.53" fill="none" />
+                  </g>
+                  <g transform="matrix(2.27612,-2.46519e-32,0,2.27612,-792.339,-404.147)">
+                    <circle class="dot" cx="621.52" cy="316.126" r="1.318" />
+                  </g>
+                </g>
+              </svg>
+            </div>
+          </div>
+          <div class="col-11" style="margin-top:26px; color: {{toastFontColorTitle}}">
+            <h5 style="color: {{toastFontColorTitle}}">{{message.summary}}</h5>
+          </div>
+          <div class="col-12">
+            <h6 style="color: {{toastFontColorMsg}};">{{message.detail}}</h6>
+          </div>
+          <div class="col-12" *ngIf="toastShowDetailsError">
+            <p-button label="Visualizar detalhe..." icon="pi pi-question-circle"
+              styleClass="p-button-sm p-button-raised p-button-danger"
+              (click)="visualizarDetalheErro(toastDetailsError)">
+            </p-button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</p-toast>
+
+<p-dialog header="Detalhe" position="top" [(visible)]="showDialogDetaisError" [transitionOptions]="'700ms'">
+  {{toastDetailsError}}
+</p-dialog>
+
+
+
+

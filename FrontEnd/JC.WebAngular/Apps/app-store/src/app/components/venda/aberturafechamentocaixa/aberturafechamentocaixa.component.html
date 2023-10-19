@@ -1,0 +1,211 @@
+<div @fade>
+    <div class="row">
+        <p-card #plnTable *ngIf="!mostrarfecharCaixa">
+            <ng-template pTemplate="header">
+                <div class="card-header card-header-1 "
+                    style="line-height: 35px; padding-left: 10px;   border-radius: 5px 5px 0 0">
+                    <i class="pi pi-table"></i> Abertura/Fechamento do Caixa
+                </div>
+            </ng-template>
+
+
+            <h3>Status Atual do Caixa :
+                <span *ngIf="record.situacaoStr == 'Aguardando Abertura'" [ngStyle]="{color:'var(--orange-500)'}">{{
+                    record.situacaoStr }}
+                    <i class="pi pi-spin pi-spinner" style="font-size: 2rem"></i>
+                </span>
+                <span *ngIf="record.situacaoStr == 'Aberto'" [ngStyle]="{color:'var(--green-500)'}">{{
+                    record.situacaoStr }}
+                    <i class="pi pi-check" style="font-size: 2rem"></i>
+                </span>
+                <span *ngIf="record.situacaoStr == 'Fechado'" [ngStyle]="{color:'var(--red-500)'}">{{ record.situacaoStr
+                    }}
+                    <i class="pi pi-check-circle" style="font-size: 2rem"></i>
+                </span>
+            </h3>
+            <div class="row g-3">
+                <div class="col-md-2">
+                    <label for="inputZip" class="form-label">Data</label>
+                    <div class="p-inputgroup">
+                        <span class="p-inputgroup-addon"> <i class="pi pi-calendar"></i></span>
+                        <input type="text" pInputText placeholder="Data" [value]="dataAtual | date:'dd/MM/yyyy hh:mm a'"
+                            disabled>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <label for="inputCity" class="form-label">Conferido por</label>
+                    <div class="p-inputgroup">
+                        <span class="p-inputgroup-addon"><i class="pi pi-user"></i></span>
+                        <input type="text" pInputText placeholder="Username" [(ngModel)]="record.nomeUsuarioAbertura"
+                            disabled>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <label for="inputState" class="form-label">Valor</label>
+                    <div class="p-inputgroup">
+                        <span class="p-inputgroup-addon"> <i class="pi pi-dollar"></i></span>
+                        <p-inputNumber class="p-inputnumber moeda" locale="pt-BR" mode="currency" currency="BRL"
+                            [minFractionDigits]="2" [maxFractionDigits]="2" id="inputPreco"
+                            [disabled]="disabledFields()" [(ngModel)]="record.valorInicial"
+                            [ngModelOptions]="{standalone: true}"></p-inputNumber>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <label for="inputZip" class="form-label">Observação</label>
+                    <div class="p-inputgroup">
+                        <span class="p-inputgroup-addon"> <i class="pi pi-bars"></i></span>
+                        <input type="text" pInputText placeholder="Observação" [(ngModel)]="record.observacaoAbertura"
+                            [disabled]="disabledFields()">
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <button pButton pRipple type="button" label="Abrir Caixa" icon="pi pi-check" (click)="confirm()"
+                        *ngIf="!disabledFields()" class="p-button-outlined p-button-success btnAbrirCaixa"></button>
+                </div>
+            </div>
+
+
+            <div class="row mt-4 g-3" *ngIf="record.situacaoStr== 'Fechado'">
+                <div class="col-md-2">
+                    <label for="inputZip" class="form-label">Data/Hora Fechamento</label>
+                    <div class="p-inputgroup">
+                        <span class="p-inputgroup-addon"> <i class="pi pi-calendar"></i></span>
+                        <input type="text" pInputText placeholder="Data"
+                            [value]="record.dataFechamento | date:'dd/MM/yyyy hh:mm a'" disabled>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <label for="inputCity" class="form-label">Conferido por</label>
+                    <div class="p-inputgroup">
+                        <span class="p-inputgroup-addon"><i class="pi pi-user"></i></span>
+                        <input type="text" pInputText placeholder="Username" [(ngModel)]="record.nomeUsuarioAbertura"
+                            disabled>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <label for="inputState" class="form-label">Valor Final</label>
+                    <div class="p-inputgroup">
+                        <span class="p-inputgroup-addon"> <i class="pi pi-dollar"></i></span>
+                        <p-inputNumber class="p-inputnumber moeda" locale="pt-BR" mode="currency" currency="BRL"
+                            [minFractionDigits]="2" [maxFractionDigits]="2" id="inputPreco" [disabled]="true"
+                            [(ngModel)]="record.valorFinal" [ngModelOptions]="{standalone: true}"></p-inputNumber>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <label for="inputZip" class="form-label">Observação</label>
+                    <div class="p-inputgroup">
+                        <span class="p-inputgroup-addon"> <i class="pi pi-bars"></i></span>
+                        <input type="text" pInputText placeholder="Observação" [(ngModel)]="record.observacaoFechamento"
+                            disabled="">
+                    </div>
+                </div>
+            </div>
+
+            <ng-template pTemplate="footer" >
+               
+                <button pButton pRipple type="button" label="Reforço Caixa" icon="pi pi-dollar"
+                    class="p-button-outlined p-button-warning mr-2" *ngIf="!mostrarFooter()"
+                    pTooltip="Adicionar dinheiro ao caixa atual"></button>
+                <button pButton pRipple type="button" label="Sangria Caixa" icon="pi pi-exclamation-triangle" *ngIf="!mostrarFooter()"
+                    class="p-button-outlined p-button-info mr-2" pTooltip="Retirar dinheiro do caixa atual"></button>
+                <button pButton pRipple type="button" label="Fechar Caixa" icon="pi pi-check-circle" *ngIf="!mostrarFooter()"
+                    class="p-button-outlined p-button-danger mr-2" pTooltip="Fechar caixa atual"
+                    (click)="mostrarFecharCaixar()"></button>
+            </ng-template>
+
+            <p-blockUI [blocked]="loading" [target]="plnTable"></p-blockUI>
+        </p-card>
+
+        <p-card #plnTable *ngIf="mostrarfecharCaixa">
+            <h3>Fechamento do Caixa</h3>
+            <div class="row g-3">
+                <div class="col-md-2">
+                    <label for="inputZip" class="form-label">Data/Hora Abertura</label>
+                    <div class="p-inputgroup">
+                        <span class="p-inputgroup-addon"> <i class="pi pi-calendar"></i></span>
+                        <input type="text" pInputText placeholder="Data"
+                            [value]="record.dataAbertura | date:'dd/MM/yyyy hh:mm a'" disabled class="campos-abertura">
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <label for="inputCity" class="form-label">Conferido por</label>
+                    <div class="p-inputgroup">
+                        <span class="p-inputgroup-addon"><i class="pi pi-user"></i></span>
+                        <input type="text" pInputText placeholder="Username" [(ngModel)]="record.nomeUsuarioAbertura"
+                            disabled class="campos-abertura">
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <label for="inputState" class="form-label">Valor Inicial</label>
+                    <div class="p-inputgroup">
+                        <span class="p-inputgroup-addon"> <i class="pi pi-dollar"></i></span>
+                        <p-inputNumber class="p-inputnumber moeda" locale="pt-BR" mode="currency" currency="BRL"
+                            [minFractionDigits]="2" [maxFractionDigits]="2" id="inputPreco"
+                            [disabled]="disabledFields()" [(ngModel)]="record.valorInicial"
+                            [ngModelOptions]="{standalone: true}"></p-inputNumber>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <label for="inputZip" class="form-label">Observação</label>
+                    <div class="p-inputgroup">
+                        <span class="p-inputgroup-addon"> <i class="pi pi-bars"></i></span>
+                        <input type="text" pInputText placeholder="Observação" [(ngModel)]="record.observacaoAbertura"
+                            [disabled]="disabledFields()">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-4 g-3">
+                <div class="col-md-2">
+                    <label for="inputZip" class="form-label">Data/Hora Fechamento</label>
+                    <div class="p-inputgroup">
+                        <span class="p-inputgroup-addon"> <i class="pi pi-calendar"></i></span>
+                        <input type="text" pInputText placeholder="Data"
+                            [value]="record.dataFechamento | date:'dd/MM/yyyy hh:mm a'" disabled>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <label for="inputCity" class="form-label">Conferido por</label>
+                    <div class="p-inputgroup">
+                        <span class="p-inputgroup-addon"><i class="pi pi-user"></i></span>
+                        <input type="text" pInputText placeholder="Username" [(ngModel)]="record.nomeUsuarioAbertura"
+                            disabled>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <label for="inputState" class="form-label">Valor Final</label>
+                    <div class="p-inputgroup">
+                        <span class="p-inputgroup-addon"> <i class="pi pi-dollar"></i></span>
+                        <p-inputNumber class="p-inputnumber moeda" locale="pt-BR" mode="currency" currency="BRL"
+                            [minFractionDigits]="2" [maxFractionDigits]="2" id="inputPreco"
+                            [(ngModel)]="record.valorFinal" [ngModelOptions]="{standalone: true}"></p-inputNumber>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <label for="inputZip" class="form-label">Observação</label>
+                    <div class="p-inputgroup">
+                        <span class="p-inputgroup-addon"> <i class="pi pi-bars"></i></span>
+                        <input type="text" pInputText placeholder="Observação"
+                            [(ngModel)]="record.observacaoFechamento">
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <button pButton pRipple type="button" label="Fechar Caixa" icon="pi pi-check" (click)="confirm()"
+                        class="p-button-outlined p-button-success btnAbrirCaixa"
+                        (click)="confirmFecharCaixar()"></button>
+                </div>
+            </div>
+            <ng-template pTemplate="footer">
+                <button pButton pRipple type="button" label="Voltar" icon="pi pi-chevron-left"
+                    (click)="voltarFecharCaixar()" class="p-button-outlined p-button-secondary"></button>
+            </ng-template>
+
+            <p-blockUI [blocked]="loading" [target]="plnTable"></p-blockUI>
+        </p-card>
+
+    </div>
+</div>
+
+
+
+<p-confirmDialog header="Confirmação" icon="pi pi-exclamation-triangle"></p-confirmDialog>

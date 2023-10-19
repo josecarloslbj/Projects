@@ -1,0 +1,129 @@
+<!-- .color1 { #68b2f8 };
+.color2 { #506ee5 };
+.color3 { #7037cd };
+.color4 { #651f71 };
+.color5 { #1d0c20 }; -->
+
+<div @fade>
+
+  <div class="row">
+    <p-card class="hidden">
+      <ng-template pTemplate="header">
+        <div class="card-header card-header-1 "
+          style="line-height: 35px; padding-left: 10px;   border-radius: 5px 5px 0 0">
+          <i class="pi pi-caret-right"></i> PAIS
+        </div>
+      </ng-template>
+
+      <div class="">
+        <form>
+          <div class="row mb-1">
+            <label for="inputEmail3" class="col-auto col-form-label">Nome:</label>
+            <div class="col-sm-3">
+              <input type="text" class="form-control form-control-sm" id="inputEmail3">
+            </div>
+            <div class="col-auto">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="gridCheck1">
+                <label class="form-check-label" for="gridCheck1">
+                  Incluir Inativos
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div class="">
+            <button pButton pRipple type="button" label="Novo" icon="pi pi-plus"
+              class="p-button-raised p-button-default me-1" [routerLink]="['/perfis/0']"></button>
+            <!-- <button pButton pRipple type="button" label="Pesquisar" icon="pi pi-search"
+            class="p-button-raised p-button-primary me-1" [loading]="loading" (click)="pesquisar();"></button> -->
+          </div>
+        </form>
+      </div>
+    </p-card>
+    <div class="m-2 hidden"></div>
+
+
+
+    <p-card class="m-2" #plnTable>
+      <ng-template pTemplate="header">
+        <div class="card-header card-header-1 "
+          style="line-height: 35px; padding-left: 10px;   border-radius: 5px 5px 0 0">
+          <i class="pi pi-table"></i> LISTAGEM DE CIDADES - <span (click)="tableFilterAvancado()">ver filtros avançados
+          </span>
+          <button pButton pRipple type="button" label="Novo" icon="pi pi-plus" class="p-button-rounded p-button-help   "
+            [routerLink]="['/cidade/0']"></button>
+        </div>
+      </ng-template>
+
+      <p-table #dt1 [value]="records" styleClass="p-datatable-striped p-datatable-gridlines" [lazy]="true"
+        (onLazyLoad)="loadCustomers($event)" responsiveLayout="scroll" dataKey="id" [selection]="selectedCustomers"
+        (selectionChange)="onSelectionChange($event)" [selectAll]="selectAll"
+        (selectAllChange)="onSelectAllChange($event)" [paginator]="true" [rows]="10" [totalRecords]="totalRecords"
+        sortField="c.id" [globalFilterFields]="['c.id','c.nome']">
+
+        <ng-template pTemplate="caption">
+          <div class="flex">
+            <button pButton label="Limpar filtro de pesquisa" class="p-button-outlined" icon="pi pi-filter-slash"
+              (click)="clear(dt1)"></button>
+            <span class="p-input-icon-left ml-auto">
+              <i class="pi pi-search"></i>
+              <input pInputText type="text" class="form-control pl-5" (input)="onGlobalFilter(dt1, $event)"
+                placeholder="Pesquisar" />
+            </span>
+          </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+          <tr>
+            <th style="width: 10%;" pSortableColumn="c.id">Código <p-sortIcon field="c.id"></p-sortIcon>
+            </th>
+            <th style="width: 30%;" pSortableColumn="c.nome">Nome <p-sortIcon field="c.nome"></p-sortIcon>
+            </th>
+            <th style="min-width:15rem">
+              <div class="flex justify-content-center align-items-center">
+                Estado
+                <p-columnFilter field="estado" matchMode="in" display="menu" [showMatchModes]="false"
+                  [showOperator]="false" [showAddButton]="false">
+                  <ng-template pTemplate="header">
+                    <div class="px-3 pt-3 pb-0">
+                      <span class="font-bold">Estados </span>
+                    </div>
+                  </ng-template>
+                  <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+
+                    <p-dropdown id="pais" [autoDisplayFirst]="false" [options]="paises" [(ngModel)]="selectedPais"
+                      [ngModelOptions]="{standalone: true}" optionLabel="descricao" dataKey="id"
+                      (onChange)="pais_onChange($event.value)"></p-dropdown>
+
+                    <p-dropdown id="estados" [autoDisplayFirst]="false" [options]="estados" [(ngModel)]="selectedEstado"
+                      [ngModelOptions]="{standalone: true}" optionLabel="nome" dataKey="id"
+                      (onChange)="filter($event.value)"></p-dropdown>
+
+                  </ng-template>
+                </p-columnFilter>
+              </div>
+            </th>
+            <th style="width: 8%;">Ação</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-cidade>
+          <tr>
+            <td>{{cidade.id}}</td>
+            <td>{{cidade.nome}}</td>
+            <td class="text-center">{{getNomeEstado(cidade.idEstado)}}</td>
+            <td>
+              <button pButton pRipple icon="pi pi-pencil"
+                class="p-button-rounded p-button-warning   p-button-text  mr-2" (click)="edit(cidade)"></button>
+              <button pButton pRipple icon="pi pi-trash" class="p-button-rounded  p-button-danger  p-button-text"
+                (click)="deleteConfirm($event,cidade)"></button>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </p-card>
+  </div>
+
+  <p-blockUI [blocked]="loading" [target]="plnTable">
+    <!-- <i class="pi pi-lock" style="font-size: 3rem"></i> -->
+  </p-blockUI>
+  <p-confirmPopup [showTransitionOptions]="'200ms'" [hideTransitionOptions]="'400ms'"></p-confirmPopup>

@@ -1,0 +1,217 @@
+.header-venda {
+    background-color: #06283D;
+    color: aliceblue;
+    width: 100%;
+    padding: 5px;
+    position: absolute;
+    // text-align: center;    
+}
+
+.p-card {
+    border: none;
+    box-shadow: none;
+    background: #faf9f8 !important;
+}
+
+.footer-venda {
+    background-color: #DFF6FF;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+.header-nome-produto {
+    background-color: #256D85;
+    color: aliceblue;
+    padding: 5px;
+    text-align: center;
+    line-height: 58px;
+    font-size: 30px;
+    font-weight: 600;
+}
+
+.title-table {
+    color: #fff;
+    font-size: 25px;
+    font-weight: 500;
+    float: left;
+}
+
+.sub-total {
+    color: #06283d;
+    font-size: 29px;
+    font-weight: 500;
+    float: right;
+}
+
+.produto-nome {
+    float: center;
+    background-color: yellow;
+    color: red;
+    padding: 0px 10px 0px 10px;
+    font-weight: 700;
+}
+
+.produto-unidade {
+    float: right;
+    background-color: yellowgreen;
+    color: #d72424;
+    padding: 0px 9px 0px 9px;
+    font-weight: 700;
+}
+
+.produto-preco {
+    float: right;
+    background-color: yellow;
+    color: #d72424;
+    padding: 0px 5px 0px 5px;
+    font-weight: 700;
+}
+
+.nome-loja {
+    float: left;
+    color: #fff;
+    font-weight: 700;
+    font-size: 18px;
+
+}
+
+.nome-caixa {
+    float: right;
+    background-color: #2e99ff;
+    color: #fff;
+    font-weight: 700;
+    padding: 2px 9px 2px 9px;
+    border-radius: 5px;
+}
+
+.destaque-caixa {
+    font-size: 15px;
+    color: #06283d;
+    font-weight: 800;
+}
+
+.p-inputnumber-buttons-stacked .p-inputnumber-input {
+    max-width: 50px;
+}
+
+.item-removido {
+    background-color: #f36868 !important;
+    text-decoration: line-through;
+}
+
+.p-dialog-header {
+    // background-color: #20f5ad  !important;
+    background-color: #c5c5c5 !important;
+    ;
+    font-weight: 600;
+    padding: 1.1rem !important;
+    ;
+}
+
+.p-dialog-footer {
+    background-color: #c5c5c5 !important;
+}
+
+.finalizar-compra-valor-total {
+    font-size: 18px;
+    color: #fff;
+    // background-color: #00b376; 
+    background-color: #256d85;
+    padding: 2px 15px 1px 15px;
+    border: 1px solid rgb(0, 117, 92);
+    ;
+    border-radius: 4px;
+    letter-spacing: 0.04em
+}
+
+
+.fundo-header {
+    background-color: #06283D;
+    color: #fff;
+}
+
+.fundo-corpo {
+    background-color: #47B5FF;
+}
+
+p-inputnumber,
+.p-inputnumber {
+    width: 100%;
+    border: none;
+}
+
+.p-inputtext {
+    display: block;
+    width: 100%;
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #212529;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border-radius: 0.375rem;
+    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+
+
+    min-height: calc(1.5em + 0.5rem + 2px);
+    padding: 0.25rem 0.5rem;
+    font-size: .875rem;
+    border-radius: 0.25rem;
+}
+
+.moeda {
+    max-width: 150px;
+}
+
+.cupom-fiscal {
+    background-color: #fdf5ab !important;
+    font-size: 11px;
+}
+
+.text-left {
+    text-align: left;
+}
+
+.text-right {
+    text-align: right;
+}
+
+.text-center {
+    text-align: center;
+}
+
+
+
+.text-left {
+    text-align: left;
+}
+
+.p-datatable .p-datatable-thead>tr.cupom-fiscal>th {
+    text-align: left;
+    //padding: 0 !important; 
+    border: 1px solid #fdf5ab !important;
+    font-weight: 400 !important;
+    color: #323130 !important;
+    background-color: #fdf5ab !important;
+    transition: box-shadow 0.2s;
+}
+
+
+.p-datatable .p-datatable-tbody>tr.cupom-fiscal>td {
+    border: 1px solid #fdf5ab !important;
+    border-width: 0px !important;
+    padding: 0px !important;
+}
+
+
+@media (max-width: 991px) {
+
+    .header-nome-produto {
+        font-size: 15px;
+    }
+}

@@ -1,0 +1,98 @@
+<div @fade>
+  <div class="row">
+    <p-card #plnTable>
+      <ng-template pTemplate="header">
+        <div class="card-header card-header-1 "
+          style="line-height: 35px; padding-left: 10px;   border-radius: 5px 5px 0 0">
+          <i class="pi pi-table"></i> LISTAGEM DE CLIENTES
+        </div>
+      </ng-template>
+
+      <p-table #dt1 [value]="usuarios" styleClass="p-datatable-striped p-datatable-gridlines" [lazy]="true"
+        (onLazyLoad)="loadCustomers($event)" responsiveLayout="scroll" dataKey="id" [selection]="selectedCustomers"
+        (selectionChange)="onSelectionChange($event)" [selectAll]="selectAll"
+        (selectAllChange)="onSelectAllChange($event)" [paginator]="true" [rows]="10" [totalRecords]="totalRecords"
+        sortField="id" [globalFilterFields]="['id','nome', 'cpf']" [tableStyle]="{'min-width':'75rem'}">
+        <ng-template pTemplate="caption">
+          <div class="displayFilter">
+            <button *ngIf="!pesquisaCliente"  pButton pRipple type="button" label="Novo" icon="pi pi-plus"
+              class="p-button-raised p-button-default" [routerLink]="['/cliente/0']"></button>
+
+            <div class="displayFilter pl-3 pr-3">
+              <span class="p-input-icon-right">
+                <i class="pi pi-search"></i>
+                <input pInputText type="text" class="form-control form-control-sm" (input)="onGlobalFilter(dt1, $event)"
+                  placeholder="Pesquisar" />
+              </span>
+            </div>
+
+            <button pButton label="Limpar filtro de pesquisa" class="p-button-outlined pl-3 pr-3"
+              icon="pi pi-filter-slash" (click)="clear(dt1)"></button>
+
+          </div>
+
+        </ng-template>
+        <ng-template pTemplate="header">
+          <tr>
+            <th style="width: 10%;" pSortableColumn="id">Código <p-sortIcon field="id"></p-sortIcon> </th>
+            <th style="width: 30%;" pSortableColumn="nome">Nome <p-sortIcon field="nome"></p-sortIcon> </th>
+            <th pSortableColumn="cpf_cnpj">CPF/CNPJ <p-sortIcon field="cpf_cnpj"></p-sortIcon> </th>
+            <th pSortableColumn="cpf_cnpj"  style="text-align: center;">Data Cadastro <p-sortIcon field="dataCastro"></p-sortIcon> </th>
+            <th pSortableColumn="ativo"  style="text-align: center;">Situação <p-sortIcon field="ativo"></p-sortIcon> </th>
+            <th style="width: 8%;text-align: center;">Ação</th>
+          </tr>
+          <tr>
+            <th> <p-columnFilter type="text" field="id"></p-columnFilter> </th>
+            <th> <p-columnFilter type="text" field="nome"></p-columnFilter> </th>
+            <th> <p-columnFilter type="text" field="cpf_cnpj"></p-columnFilter> </th>
+            <th style="text-align: center;">
+              <div >
+                <p-columnFilter type="date" field="dataCadastro"></p-columnFilter>
+              </div>
+            </th>
+            <th  style="text-align: center;">
+              <div>
+                <p-columnFilter type="boolean" field="ativo" matchMode="equals"></p-columnFilter>
+              </div>
+            </th>
+            <th></th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-usuario>
+          <tr>
+            <td>{{usuario.id}}</td>
+            <td>{{usuario.nome}}</td>
+            <td>{{usuario.cpj_cnpj}}</td>
+            <td style="text-align: center;">
+              {{usuario.dataCadastro | date: 'dd/MM/yyyy HH:mm' }}
+            </td>
+            <td style="text-align: center;">
+              <!-- {{usuario.ativo}} -->
+              <span *ngIf="usuario.ativo ===true" class="badge bg-success p-2 ">
+                <!-- <i class="pi pi-check"></i>  -->
+                {{obterDescricaoSituacaoAtual(usuario)}}
+              </span>
+              <span *ngIf="usuario.ativo ===false" class="badge bg-danger p-2">
+                <!-- <i class="pi pi-times"></i> -->
+                {{obterDescricaoSituacaoAtual(usuario)}}
+              </span>
+            </td>
+            <td>
+              <button *ngIf="!pesquisaCliente" pButton pRipple icon="pi pi-pencil"
+                class="p-button-rounded p-button-warning   p-button-text  mr-2" (click)="edit(usuario)"></button>
+              <button *ngIf="!pesquisaCliente"   pButton pRipple icon="pi pi-trash" class="p-button-rounded  p-button-danger  p-button-text"
+                (click)="deleteConfirm($event,usuario)"></button>
+
+                <button *ngIf="pesquisaCliente" type="button" pButton icon="pi pi-search" (click)="selectCliente(usuario)"></button>
+        
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </p-card>
+  </div>
+
+  <p-blockUI [blocked]="loading" [target]="plnTable">
+    <!-- <i class="pi pi-lock" style="font-size: 3rem"></i> -->
+  </p-blockUI>
+  <p-confirmPopup [showTransitionOptions]="'200ms'" [hideTransitionOptions]="'400ms'"></p-confirmPopup>

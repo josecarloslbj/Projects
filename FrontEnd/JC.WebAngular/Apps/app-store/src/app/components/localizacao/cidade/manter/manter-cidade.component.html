@@ -1,0 +1,50 @@
+<div @fade>
+  <div class="card" style="border: 2px solid #e5e5e5; border-radius:5px; background-color: #fff;">
+    <div class="card-header card-header-1"><i class="pi pi-caret-right"></i>CADASTRAR CIDADE      
+    </div>
+    <div class="card-body">
+      <form>
+        <div class="row mb-1">      
+          <label for="pais" class="col-sm-1 col-form-label">Pais:</label>
+          <div class="col-sm-11">
+            <p-dropdown   id="pais"  [autoDisplayFirst]="false" [options]="paises" [(ngModel)]="selectedPais"  [ngModelOptions]="{standalone: true}" 
+            optionLabel="descricao" dataKey="id" (onChange)="pais_onChange($event.value)"
+            ></p-dropdown>
+          </div>
+        </div>
+
+        <div class="row mb-1">      
+          <label for="estado" class="col-sm-1 col-form-label">Estado:</label>
+          <div class="col-sm-11">
+            <p-dropdown  id="estado" [autoDisplayFirst]="false" [options]="estados" [(ngModel)]="selectedEstado"  [ngModelOptions]="{standalone: true}" 
+            optionLabel="nome" dataKey="id" (onChange)="estado_onChange($event.value)"
+            ></p-dropdown>
+          </div>
+        </div>
+        <div class="row mb-1">
+
+          <label for="inputEmail3" class="col-sm-1 col-form-label">Nome:</label>
+          <div class="col-sm-11">
+            <input type="text" class="form-control form-control-sm" id="inputEmail3" [(ngModel)]="record.nome"
+              name="nome">
+          </div>
+        </div>
+        <div class="row mb-1">
+          <label for="inputDesc" class="col-sm-1 col-form-label">Descrição:</label>
+          <div class="col-sm-11">
+            <textarea class="form-control form-control-sm" id="inputDesc" rows="5" [(ngModel)]="record.idEstado"
+              name="descricao" aria-label="With textarea"></textarea>
+          </div>
+        </div>
+      </form>
+
+      <div class="col-12">
+        <button pButton pRipple type="button" label="Salvar" icon="pi pi-check"
+          class="p-button-raised p-button-success me-1" (click)="salvar_click();"></button>
+        <button pButton pRipple type="button" class="p-button-raised p-button-default me-1" label="Voltar"
+          icon="pi pi-chevron-left" [routerLink]="['/cidade']">
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

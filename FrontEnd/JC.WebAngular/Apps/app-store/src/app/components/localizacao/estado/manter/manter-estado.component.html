@@ -1,0 +1,52 @@
+<div @fade>
+  <p-toast position="top-right">
+    <ng-template let-message pTemplate="message">
+      <div class="flex flex-column" style="flex: 1">
+        <div class="text-center">
+          <i class="pi pi-exclamation-triangle" style="font-size: 2.5rem"></i>
+          <h5>{{message.summary}}</h5>
+          <h6>{{message.detail}}</h6>
+        </div>
+        <!-- <div class="grid p-fluid">              
+              <div class="col-12">
+                  <button type="button" pButton  label="Fechar" class="p-button-secondary"></button>
+              </div>
+          </div> -->
+      </div>
+    </ng-template>
+  </p-toast>
+  <!-- <p-toast  position="top-center"></p-toast>  -->
+  <!-- <p-messages [(value)]="msgs"></p-messages> -->
+  <div class="card" style="border: 2px solid #e5e5e5; border-radius:5px; background-color: #fff;">
+    <div class="card-header card-header-1"><i class="pi pi-caret-right"></i>CADASTRAR PERFIL
+      <!-- <button pButton pRipple type="button" class="p-button-raised p-button-default me-1"      icon="pi pi-chevron-left" [routerLink]="['/pages/perfis']"> </button>  -->
+    </div>
+    <div class="card-body">
+      <form>
+        <div class="row mb-1">
+
+          <label for="inputEmail3" class="col-sm-1 col-form-label">Nome:</label>
+          <div class="col-sm-11">
+            <input type="text" class="form-control form-control-sm" id="inputEmail3" [(ngModel)]="record.nome"
+              name="nome">
+          </div>
+        </div>
+        <div class="row mb-1">
+          <label for="inputDesc" class="col-sm-1 col-form-label">Descrição:</label>
+          <div class="col-sm-11">
+            <textarea class="form-control form-control-sm" id="inputDesc" rows="5" [(ngModel)]="record.codigoUf"
+              name="descricao" aria-label="With textarea"></textarea>
+          </div>
+        </div>
+      </form>    
+
+      <div class="col-12">
+        <button pButton pRipple type="button" label="Salvar" icon="pi pi-check"
+          class="p-button-raised p-button-success me-1" (click)="salvar_click();"></button>
+        <button pButton pRipple type="button" class="p-button-raised p-button-default me-1" label="Voltar"
+          icon="pi pi-chevron-left" [routerLink]="['/estado']">
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

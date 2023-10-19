@@ -1,0 +1,56 @@
+<div @fade>
+   
+    <div class="row shadow-lg " style="background-color: #6bc6f1; border-radius: 5px; ">
+        <div class="col-md-3 col-sm-12">
+            <img src="../../../assets/images/notification.gif" class="img-fluid" alt="notificações">
+        </div>
+        <div class="col-auto">
+            <h3 class="m-5 p-5" style="color: azure;"><i class="pi pi-bell" style="font-size: 2rem"></i> Receba notificações no celular a cada ação executada no sistema
+            </h3>
+
+            <div class="fl4ex">         
+                <h3 style="color: azure;">Vendas</h3>      
+                <div class="field-checkbox">
+                    <p-checkbox name="group" value="VENDA" [(ngModel)]="selectedValues" inputId="venda"></p-checkbox>
+                    <label for="venda">Receba notificação a cada venda realizada</label>
+                </div>
+                <div class="field-checkbox">
+                    <p-checkbox name="group" value="ABERTURA_CAIXA" [(ngModel)]="selectedValues" inputId="ny"></p-checkbox>
+                    <label for="ny">Receba notificação quando for o caixa for aberto</label>
+                </div>
+                <div class="field-checkbox">
+                    <p-checkbox name="group" value="FECHAMENTO_CAIXA" [(ngModel)]="selectedValues" inputId="ny"></p-checkbox>
+                    <label for="ny">Receba notificação quando for o caixa for fechado</label>
+                </div>
+                <div class="field-checkbox">
+                    <p-checkbox name="group" value="CLIENTE_CADASTRADO" [(ngModel)]="selectedValues" inputId="ny"></p-checkbox>
+                    <label for="ny">Receba notificação quando um cliente for cadastrado</label>
+                </div>  
+                <h3 style="color: azure;">Estoque</h3>
+                <div class="field-checkbox">
+                    <p-checkbox name="group" value="PRODUTO_CADASTRADO" [(ngModel)]="selectedValues" inputId="ny"></p-checkbox>
+                    <label for="ny">Receba notificação quando um produto for cadastrado</label>
+                </div>
+                <div class="field-checkbox">
+                    <p-checkbox name="group" value="ESTOQUE_ALERTA" [(ngModel)]="selectedValues" inputId="ny"></p-checkbox>
+                    <label for="ny">Receba notificação quando o estoque estiver abaixo do desejado</label>
+                </div>              
+               
+                <h3 style="color: azure;">Relatórios</h3>
+                <div class="field-checkbox">
+                    <p-checkbox name="group" value="RELATORIO_VENDA" [(ngModel)]="selectedValues" inputId="ny"></p-checkbox>
+                    <label for="ny">Receba  mensalmente com o relatório de vendas</label>
+                </div>   
+                <div class="field-checkbox">
+                    <p-checkbox name="group" value="RELATORIO_VENDA" [(ngModel)]="selectedValues" inputId="ny"></p-checkbox>
+                    <label for="ny">Receba  semanalmente com o relatório de vendas</label>
+                </div>  
+                <div class="field-checkbox">
+                    <p-checkbox name="group" value="RELATORIO_VENDA" [(ngModel)]="selectedValues" inputId="ny"></p-checkbox>
+                    <label for="ny">Receba  diariamente com o relatório de vendas</label>
+                </div>
+            </div>
+
+        </div>
+
+</div>

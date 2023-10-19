@@ -1,0 +1,94 @@
+<div @fade>
+    <p-card>
+        <ng-template pTemplate="header">
+            <div class="card-header card-header-1 "
+                style="line-height: 35px; padding-left: 10px;   border-radius: 5px 5px 0 0">
+                <i class="pi pi-caret-right"></i> CADASTRAR USUÁRIO
+            </div>
+        </ng-template>
+        <ng-template pTemplate="body">
+            <!-- Formulario -->
+            <form class="row">
+                <div class="col-6">
+                    <div>
+                        <label for="inputEmail3" class="col-sm-1 col-form-label">Nome:</label>
+                        <div class="col-sm-12">
+                            <input type="text" class="form-control form-control-sm" id="inputEmail3"
+                                [(ngModel)]="usuario.nome" name="nome">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <label for="inputImagem" class="col-form-label">Imagem:</label>
+                    <app-upload #appUpload></app-upload>
+                </div>
+                <div class="col-6">
+                    <div>
+                        <label for="inputEmail3" class="col-sm-1 col-form-label">CPF:</label>
+                        <div class="col-sm-12">
+                            <input type="text" class="form-control form-control-sm" id="inputEmail3"
+                                [(ngModel)]="usuario.cpf" name="cpf">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div>
+                        <label for="inputEmail3" class="col-sm-1 col-form-label">Email:</label>
+                        <div class="col-sm-12">
+                            <input type="text" class="form-control form-control-sm" id="inputEmail3"
+                                [(ngModel)]="usuario.email" name="email">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-6">
+                    <div>
+                        <label for="inputEmail3" class="col-sm-1 col-form-label">Login:</label>
+                        <div class="col-sm-12">
+                            <input type="text" class="form-control form-control-sm" id="inputEmail3"
+                                [(ngModel)]="usuario.login" name="login">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div *ngIf="usuario.id==0">
+                        <label for="inputEmail3" class="col-sm-1 col-form-label">Senha:</label>
+                        <div class="col-sm-12">
+                            <input type="text" class="form-control form-control-sm" id="inputEmail3"
+                                [(ngModel)]="usuario.senha" name="senha">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="">
+                        <label for="inputDesc" class="col-sm-1 col-form-label">Observação:</label>
+                        <div class="col-sm-12">
+                            <textarea class="form-control form-control-sm" id="inputDesc" rows="5"
+                                [(ngModel)]="usuario.observacao" name="descricao" aria-label="With textarea"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="">
+                        <label for="inputDesc" class="col-sm-1 col-form-label">Atribuições:</label>
+                        <div class="col-sm-6">
+                            <p-multiSelect [options]="perfis" [overlayVisible]="true"
+                                [ngModelOptions]="{standalone: true}" [(ngModel)]="selectedPerfis" optionLabel="nome"
+                                display="chip" [maxSelectedLabels]="5"
+                                [selectedItemsLabel]="'{0} items selected'"></p-multiSelect>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+            <!-- Botoes -->
+            <div class="col-12">
+                <button pButton pRipple type="button" label="Salvar" icon="pi pi-check"
+                    class="p-button-raised p-button-success me-1" (click)="salvar_click();"></button>
+                <button pButton pRipple type="button" class="p-button-raised p-button-default me-1" label="Voltar"
+                    icon="pi pi-chevron-left" [routerLink]="['/usuarios']">
+                </button>
+            </div>
+        </ng-template>
+    </p-card>
+</div>

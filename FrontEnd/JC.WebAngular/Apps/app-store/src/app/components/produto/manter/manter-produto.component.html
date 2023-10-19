@@ -1,0 +1,160 @@
+<div @fade>
+    <p-card #plnForm>
+        <ng-template pTemplate="header">
+            <div class="card-header card-header-1 "
+                style="line-height: 35px; padding-left: 10px;   border-radius: 5px 5px 0 0">
+                <i class="pi pi-caret-right"></i> {{tituloPagina}}
+            </div>
+        </ng-template>
+        <ng-template pTemplate="body">
+            <!-- Formulario -->
+            <form class="row">
+                <div class="col-md-12 col-sm-12">
+                    <label for="inputSituacao" class="pr-5">Situação atual:</label>
+                    <p-inputSwitch id="inputSituacao" name="situacao" [(ngModel)]="record.ativo"
+                        [ngModelOptions]="{standalone: true}"></p-inputSwitch>
+                    
+                    <span style="position: absolute;">
+                        <p-badge *ngIf="record.ativo===true" value="Ativo" styleClass="ml-4 mr-4 mb-2"
+                            severity="success"></p-badge>
+                        <p-badge *ngIf="record.ativo===false" value="Inativo" styleClass="ml-4 mr-4 mb-2"
+                            severity="danger"></p-badge>
+                    </span>
+                </div> 
+
+                <div class="col-md-4 col-sm-12">
+                    <label for="inputcodigo" class="col-form-label">Código de barras:</label>
+                    <div class="p-inputgroup">
+                        <input type="text" class="form-control form-control-sm" id="inputcodigo"
+                            [(ngModel)]="record.codigo" name="codigo">
+                        <button type="button" pButton pRipple icon="pi pi-refresh" label="Gerar" styleClass="p-button-warn"></button>
+
+                    </div>
+                </div>
+                <div class="col-md-8 col-sm-12">
+                    <label for="inputNome" class="col-form-label">Nome:</label>
+                    <input type="text" class="form-control form-control-sm" id="inputNome" [(ngModel)]="record.nome"
+                        name="nome">
+                </div>
+                <div class="col-md-2 col-sm-12">
+                    <label for="inputPreco" class="col-form-label">Custo:</label>
+                    <div class="col-md-6 ">
+                        <p-inputNumber [(ngModel)]="record.valorCusto" class="p-inputnumber moeda" locale="pt-BR"
+                            mode="currency" currency="BRL" [minFractionDigits]="2" [maxFractionDigits]="2"
+                            id="inputPreco" [ngModelOptions]="{standalone: true}"></p-inputNumber>
+                    </div>
+                </div>
+                <div class="col-md-2 col-sm-12">
+                    <label for="inputPreco" class="col-form-label">Preço Venda:</label>
+                    <div class="col-md-6 ">
+                        <p-inputNumber [(ngModel)]="record.preco" class="p-inputnumber moeda" locale="pt-BR"
+                            mode="currency" currency="BRL" [minFractionDigits]="2" [maxFractionDigits]="2"
+                            id="inputPreco" [ngModelOptions]="{standalone: true}"></p-inputNumber>
+                    </div>
+                </div>
+
+                <div class="col-md-2 col-sm-12">
+                    <label for="inputUnidMedida" class="col-form-label">Unidade Medida:</label>
+                    <div class="col-md-6 ">
+                        <input type="text" class="form-control form-control-sm" id="inputUnidMedida"
+                            [(ngModel)]="record.unidadeMedida" placeholder="UN" name="inputUnidMedida">
+                    </div>
+                </div>
+
+                <div class="col-md-3 col-sm-12">
+                    <label for="inputUnidQtde" class="col-form-label">Quantidade:</label>
+                    <div class="col-md-6 ">
+                        <input type="text" class="form-control form-control-sm" id="inputUnidQtde"
+                            [(ngModel)]="record.qtde" name="UnitQtde">
+                    </div>
+                </div>
+
+                <div class="col-md-3 col-sm-12">
+                    <label for="inputUnidQtdeMin" class="col-form-label">Alerta Qtde Mínimo:</label>
+                    <div class="col-md-6 ">
+                        <input type="text" class="form-control form-control-sm" id="inputUnidQtdeMin"
+                            [(ngModel)]="record.qtdeMin" name="UnitQtdeMin">
+                    </div>
+                </div>
+
+                <div class="col-md-4 col-sm-12">
+                    <label for="grupoProduto" class="col-sm-12 col-form-label">Grupo do Produto:</label>
+                    <div class="col-sm-12">
+                        <p-dropdown id="grupoProduto" [autoDisplayFirst]="false" [options]="grupos" [showClear]="true"
+                            [(ngModel)]="selectedGrupo" [ngModelOptions]="{standalone: true}" optionLabel="nome"
+                            dataKey="id"></p-dropdown>
+                    </div>
+                </div>
+
+                <div class="col-md-4 col-sm-12">
+                    <label for="fabricantes" class="col-sm-12 col-form-label">Marca:</label>
+                    <div class="col-sm-12">
+                        <p-dropdown id="fabricantes" [autoDisplayFirst]="false" [options]="fabricantes"
+                            [showClear]="true" [(ngModel)]="selectedFabricante" [ngModelOptions]="{standalone: true}"
+                            optionLabel="nome" dataKey="id"></p-dropdown>
+                    </div>
+                </div>
+
+                <div class="col-md-4 col-sm-12">
+                    <label for="fornecedores" class="col-sm-12 col-form-label">Fornecedor:</label>
+                    <div class="col-sm-12">
+                        <p-dropdown id="fornecedores" [autoDisplayFirst]="false" [options]="fornecedores"
+                            [showClear]="true" [(ngModel)]="selectedFornecedor" [ngModelOptions]="{standalone: true}"
+                            optionLabel="nome" dataKey="id"></p-dropdown>
+                    </div>
+                </div>
+
+                <div class="col-12">
+                    <p-image *ngIf="record.urlArquivo" src="{{this.baseImg}}/{{record.urlArquivo}}" alt="Image"
+                        [preview]="true" width="250"></p-image>
+                </div>
+
+                <div class="col-12">
+                    <p-fileUpload name="arquivo" url="{{baseApi}}/upload/upload" (onUpload)="onUpload($event)"
+                        (onRemove)="onRemove($event)" (onSelect)="onSelect($event)" [multiple]="false" mode="basic"
+                        [auto]="true" accept="image/*" [maxFileSize]="1000000" [withCredentials]="true"
+                        [showCancelButton]="false" uploadLabel="Enviar" cancelLabel="Cancelar"
+                        chooseLabel="Procurar imagem" chooseIcon="pi pi-search">
+                        <ng-template pTemplate="content">
+                            <ul *ngIf="uploadedFiles && uploadedFiles.length">
+                                <li *ngFor="let file of uploadedFiles">
+
+                                    <p-image *ngIf="record.urlArquivo" src="{{this.baseImg}}/{{record.urlArquivo}}"
+                                        alt="Image" [preview]="true" alt="{{file.nome}}" width="250"></p-image>
+                                    -{{file.nome}}
+
+                                    {{file.name}} - {{file.size}} bytes
+
+                                </li>
+                            </ul>
+                        </ng-template>
+                    </p-fileUpload>
+                </div>
+
+                <div class="col-12">
+                    <label for="inputDesc" class=" col-form-label">Descrição:</label>
+                    <textarea class="form-control form-control-sm" id="inputDesc" rows="5"
+                        [(ngModel)]="record.descricao" name="descricao" aria-label="With textarea"></textarea>
+                </div>
+
+                <div class="col-12">
+                    <label for="inputDesc" class=" col-form-label">Localização do produto na patilheira/estoque:</label>
+                    <textarea class="form-control form-control-sm" id="inputDesc" rows="2"
+                        [(ngModel)]="record.localizacao" name="descricao" aria-label="With textarea"></textarea>
+                </div>
+            </form>
+
+            <!-- Botoes -->
+            <div class="col-12">
+                <button pButton pRipple type="button" label="Salvar" icon="pi pi-check"
+                    class="p-button-raised p-button-success me-1" (click)="salvar_click();"></button>
+                <button pButton pRipple type="button" class="p-button-raised p-button-default me-1" label="Voltar"
+                    icon="pi pi-chevron-left" (click)="voltar_click();">
+                </button>
+            </div>
+        </ng-template>
+    </p-card>
+</div>
+
+<p-blockUI [blocked]="loading" [target]="plnForm">
+</p-blockUI>

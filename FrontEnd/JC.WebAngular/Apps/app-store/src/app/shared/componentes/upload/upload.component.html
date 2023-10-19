@@ -1,0 +1,28 @@
+<div class="col-12">
+    <p-image *ngIf="record && record.diretorio" src="{{this.baseImg}}/{{record.diretorio}}" alt="Image" [preview]="true"
+        width="250" class="m-2 p-2"></p-image>
+    <div style="display: flex;">
+        <p-fileUpload name="arquivo" url="{{baseApi}}/upload/upload" (onUpload)="onUpload($event)"
+            (onRemove)="onRemove($event)" (onSelect)="onSelect($event)" [multiple]="false" mode="basic" [auto]="true"
+            accept="image/*" [maxFileSize]="3000000" [withCredentials]="true" [showCancelButton]="false"
+            uploadLabel="Enviar" cancelLabel="Cancelar" chooseLabel="Procurar imagem" chooseIcon="pi pi-search">
+            <ng-template pTemplate="content">
+                <ul *ngIf="uploadedFiles && uploadedFiles.length">
+                    <li *ngFor="let file of uploadedFiles">
+
+                        {{record.diretorio}}
+
+                        <p-image *ngIf="record.diretorio" src="{{this.baseImg}}/{{record.diretorio}}" alt="Image"
+                            [preview]="true" alt="{{file.nome}}" width="250"></p-image>
+                        -{{file.nome}}
+
+                        {{file.name}} - {{file.size}} bytes
+
+                    </li>
+                </ul>
+            </ng-template>
+        </p-fileUpload>        
+        <button pButton pRipple type="button" icon="pi pi-times" label="Remover" class="p-button p-button-danger ml-1 mr-1"
+        (click)="deleteConfirm($event,record)"></button>
+    </div>
+</div>

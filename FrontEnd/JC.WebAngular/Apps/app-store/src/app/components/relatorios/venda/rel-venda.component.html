@@ -1,0 +1,138 @@
+<h3>Relatório de vendas</h3>
+
+
+<div class="field col-12 md:col-12">
+    <label class="pr-2" for="range">Periodo de venda: </label>
+    <p-calendar #calendar [(ngModel)]="rangeDates"  selectionMode="range" [readonlyInput]="true" inputId="range"
+     [showIcon]="true" [maxDate]="maxDate"  [showButtonBar]="true" placeholder="mm/dd/yyyy" [numberOfMonths]="2"
+     [showTransitionOptions]="'300ms'" [hideTransitionOptions]="'300ms'" (onTodayClick)="onTodayClick()" (onSelect)="onSelect_date($event,this);">
+    </p-calendar>                
+     <button pButton label="Pesquisar" class="p-button-primary ml-3 pl-3 pr-3"
+     icon="pi pi-search" (click)="pesquisar()"></button>  
+</div>
+
+<p-card #plnTable>
+
+    <p-table #dt1  [value]="records" dataKey="id" [globalFilterFields]="['id','dataCadastro', 'formaPagamento']" ortField="id"  >
+
+        <!-- <ng-template pTemplate="caption">
+            <div class="displayFilter"> 
+              <div class="displayFilter pl-3 pr-3">
+                <span class="p-input-icon-right">
+                  <i class="pi pi-search"></i>
+                  <input pInputText type="text" class="form-control form-control-sm" (input)="onGlobalFilter(dt1, $event)"
+                    placeholder="Pesquisar" />
+                </span>
+              </div>  
+              <button pButton label="Limpar filtro de pesquisa" class="p-button-outlined pl-3 pr-3"
+                icon="pi pi-filter-slash" (click)="clear(dt1)"></button>  
+            </div>  
+          </ng-template>  -->
+        <ng-template pTemplate="header">
+            <tr>
+                <th style="width: 5rem"></th>
+                <th pSortableColumn="id">Cupom <p-sortIcon field="id"></p-sortIcon></th>
+                <th pSortableColumn="dataCadastro">Data Venda <p-sortIcon field="dataCadastro"></p-sortIcon></th>
+                <th pSortableColumn="formaPagamento">Forma Pagamento <p-sortIcon field="formaPagamento"></p-sortIcon>
+                </th>
+                <th pSortableColumn="quantidade">Qtde produtos <p-sortIcon field="quantidade"></p-sortIcon></th>
+                <th pSortableColumn="valorPedido">Valor pedido <p-sortIcon field="valorPedido"></p-sortIcon></th>
+                <th pSortableColumn="valorDesconto">Desconto <p-sortIcon field="valorDesconto"></p-sortIcon></th>
+                <th pSortableColumn="valorTotal">Valor Total <p-sortIcon field="valorTotal"></p-sortIcon></th>
+                <th pSortableColumn="situacaoAtual">Situação<p-sortIcon field="situacaoAtual"></p-sortIcon></th>
+                <th pSortableColumn="usuario ">Caixa <p-sortIcon field="usuario"></p-sortIcon></th>
+            </tr>
+
+            <tr hidden>
+                <th style="width: 5rem"></th>
+                <th> <p-columnFilter type="text" field="id"></p-columnFilter> </th>
+                <th> <p-columnFilter type="date" field="dataCadastro"></p-columnFilter> </th>
+                <th> <p-columnFilter type="text" field="formaPagamento"></p-columnFilter> </th>
+                <th> <p-columnFilter type="numeric" field="quantidade"></p-columnFilter> </th>
+                <th> <p-columnFilter type="numeric" currency="BRL" field="valorPedido"></p-columnFilter> </th>
+                <th> <p-columnFilter type="numeric" currency="BRL" field="valorDesconto"></p-columnFilter> </th>
+                <th> <p-columnFilter type="numeric" currency="BRL" field="valorTotal"></p-columnFilter> </th>
+                <th> <p-columnFilter type="text" field="situacaoAtual"></p-columnFilter> </th>
+                <th> <p-columnFilter type="text" field="usuario"></p-columnFilter> </th>
+            </tr>
+
+            
+        </ng-template>
+        <ng-template pTemplate="body" let-product let-expanded="expanded">
+            <tr>
+                <td>
+                    <button type="button" pButton pRipple [pRowToggler]="product"
+                        class="p-button-text p-button-rounded p-button-plain"
+                        [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button>
+                </td>
+                <td>{{product.id}}-{{product.codigo}}</td>
+                <td>{{product.dataCadastro | date:'dd/MM/yyyy HH:mm'}}</td>
+                <td>{{product.formaPagamento}}</td>
+                <td>{{product.itensPedido.length}}</td>
+                <td>{{product.valorPedido | currency:'BRL'}}</td>
+                <td>{{product.valorDesconto| currency:'BRL'}}</td>
+                <td style="font-weight: 600; color: green;">{{product.valorTotal| currency:'BRL'}}</td>
+                <td>
+                    <!-- <p-badge value="{{product.situacaoAtual}}" severity="success" styleClass="m-2">
+                       
+                    </p-badge>          
+                     -->
+                    <span class="badge bg-success pt-2 pb-2 pl-4 pr-4"> <i class="pi pi-check"></i>
+                        {{product.situacaoAtual}}</span>
+                </td>
+                <td>
+                    {{ product.usuario.nome }}
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="rowexpansion" let-product>
+            <tr>
+                <td colspan="7">
+                    <div class="p-3">
+                        <p-table [value]="product.itensPedido" dataKey="id">
+                            <ng-template pTemplate="header">
+            <tr>
+                <th pSortableColumn="id">Código <p-sortIcon field="price"></p-sortIcon></th>
+                <th pSortableColumn="date">Imagem <p-sortIcon field="quantidade"></p-sortIcon></th>
+                <th pSortableColumn="customer">Produto <p-sortIcon field="descricao"></p-sortIcon></th>
+                <th pSortableColumn="date">Qtde. <p-sortIcon field="quantidade"></p-sortIcon></th>
+                <th pSortableColumn="amount">Preço <p-sortIcon field="valorUnitario"></p-sortIcon></th>
+                <th pSortableColumn="status">Desconto <p-sortIcon field="valorDesconto"></p-sortIcon></th>
+                <th pSortableColumn="status">Total <p-sortIcon field="valorDesconto"></p-sortIcon></th>
+                <th style="width: 4rem">Situação
+                <th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-order>
+            <tr>
+                <td>{{order.produto.codigo}}</td>
+                <td><img [src]="getImageProduct(order.produto)" [alt]="order.produto.nome" width="70"
+                        class="shadow-4" /></td>
+                <td>{{order.produto.nome}}</td>
+                <td>{{order.quantidade}}</td>
+                <td>{{order.valorUnitario | currency:'BRL'}}</td>
+                <td>{{order.valorDesconto | currency:'BRL'}} </td>
+                <td>{{order.valorTotal | currency:'BRL'}} </td>
+                <td>
+                    <span class="badge bg-success pt-2 pb-2 pl-4 pr-4"> <i class="pi pi-check"></i>
+                        {{order.situacaoAtual}}</span>
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+            <tr>
+                <td colspan="6">Não existe itens nesse pedidos! Realize a primeira venda.</td>
+            </tr>
+        </ng-template>
+    </p-table>
+    </div>
+    </td>
+    </tr>
+    </ng-template>
+    </p-table>
+</p-card>
+
+
+<p-blockUI [blocked]="loading" [target]="plnTable">
+    <i class="pi pi-lock" style="font-size: 3rem"></i>
+</p-blockUI>

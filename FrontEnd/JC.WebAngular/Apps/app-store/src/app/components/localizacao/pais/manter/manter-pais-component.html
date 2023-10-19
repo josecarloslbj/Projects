@@ -1,0 +1,93 @@
+<div @fade>
+  <p-card #plnForm>
+    <ng-template pTemplate="header">
+      <div class="card-header card-header-1 "
+        style="line-height: 35px; padding-left: 10px;   border-radius: 5px 5px 0 0">
+        <i class="pi pi-caret-right"></i> {{tituloPagina}}
+      </div>
+    </ng-template>
+    <ng-template pTemplate="body">
+      <!-- Formulario -->
+      <form class="row p-0 m-0">
+        <div class="col-md-12 col-sm-12">
+          <label for="inputSituacao" class="pr-5">Situação atual:</label>
+          <p-inputswitch id="inputSituacao" name="situacaoAtual" [(ngModel)]="record.ativo"
+            [ngModelOptions]="{standalone: true}" ></p-inputswitch>
+          <span style="position: absolute;">
+            <p-badge *ngIf="record.ativo===true" value="Ativo"
+              styleClass="ml-4 mr-4 mb-2"
+              severity="success"></p-badge>
+            <p-badge *ngIf="record.ativo===false" value="Inativo"
+              styleClass="ml-4 mr-4 mb-2"
+              severity="danger"></p-badge>
+          </span>
+        </div>
+        <div class="col-md-6 col-sm-12">
+          <label for="inputNome" class="col-form-label">Nome:</label>
+          <input type="text" class="form-control form-control-sm" id="inputNome"
+            [(ngModel)]="record.nome"
+            name="nome">
+        </div>
+        <div class="col-md-6 col-sm-12">
+          <label for="inputDescricao" class="col-form-label">Descrição:</label>
+          <input type="text" class="form-control form-control-sm"
+            id="inputDescricao"
+            [(ngModel)]="record.descricao"
+            name="descricao">
+        </div>
+        <div class="col-md-3 col-sm-12">
+          <label for="inputSigla" class="col-form-label">Sigla:</label>
+          <input type="text" class="form-control form-control-sm"
+            id="inputSigla"
+            [(ngModel)]="record.sigla"
+            name="sigla">
+        </div>
+        <div class="col-md-3 col-sm-12">
+          <label for="inputAbreviacao" class="col-form-label">Abreviação:</label>
+          <input type="text" class="form-control form-control-sm"
+            id="inputAbreviacao"
+            [(ngModel)]="record.abreviacao"
+            name="abreviacao">
+        </div>
+        <div class="col-md-3 col-sm-12">
+          <label for="inputCodigo" class="col-form-label">Código:</label>
+          <input type="text" class="form-control form-control-sm"
+            id="inputCodigo"
+            [(ngModel)]="record.codigo"
+            name="codigo">
+        </div>
+        <div class="col-md-3 col-sm-12">
+          <label for="inputCodigoDDD" class="col-form-label">Código Telefone:</label>
+          <input type="text" class="form-control form-control-sm"
+            id="inputCodigoDDD"
+            [(ngModel)]="record.codigoTelefone"
+            name="codigoTelefone">
+        </div>
+        <!-- <div class="col-md-12 col-sm-12">
+          <div class="pb-2 pt-2"> {{record.padrao}}
+            <label for="inputPadrao" class="pr-5">Definir como padrão:</label>
+            <p-checkbox [(ngModel)]="record.padrao" [binary]="true"
+              [ngModelOptions]="{standalone: true}"
+              inputId="inputPadrao"></p-checkbox>
+            <p-inputswitch id="inputPadrao" [(ngModel)]="record.padrao"
+              [ngModelOptions]="{standalone: true}" name="padrao"></p-inputswitch>
+          </div>
+        </div> -->
+      </form>
+
+      <!-- Botoes -->
+      <div class="col-12">
+        <button pButton pRipple type="button" label="Salvar" icon="pi pi-check"
+          class="p-button-raised p-button-success me-1"
+          (click)="salvar_click();"></button>
+        <button pButton pRipple type="button"
+          class="p-button-raised p-button-default me-1" label="Voltar"
+          icon="pi pi-chevron-left" (click)="voltar_click();">
+        </button>
+      </div>
+    </ng-template>
+  </p-card>
+</div>
+
+<!-- <p-blockui [blocked]="loading" [target]="plnForm">
+</p-blockui> -->

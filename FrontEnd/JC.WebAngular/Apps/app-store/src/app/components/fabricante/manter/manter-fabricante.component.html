@@ -1,0 +1,38 @@
+<div @fade>
+    <p-card #plnForm>
+        <ng-template pTemplate="header">
+            <div class="card-header card-header-1 "
+                style="line-height: 35px; padding-left: 10px;   border-radius: 5px 5px 0 0">
+                <i class="pi pi-caret-right"></i> {{tituloPagina}}
+            </div>
+        </ng-template>
+        <ng-template pTemplate="body">
+            <!-- Formulario -->
+            <form class="row">
+
+                <div class="col-6 off-set-6">
+                    <label for="inputNome" class="col-form-label">Nome:</label>
+                    <input type="text" class="form-control form-control-sm" id="inputNome" [(ngModel)]="record.nome"
+                        name="nome">
+                </div>
+                <div class="col-12">
+                    <label for="inputDesc" class=" col-form-label">Descrição:</label>
+                    <textarea class="form-control form-control-sm" id="inputDesc" rows="5"
+                        [(ngModel)]="record.descricao" name="descricao" aria-label="With textarea"></textarea>
+                </div>
+            </form>
+
+            <!-- Botoes -->
+            <div class="col-12">
+                <button pButton pRipple type="button" label="Salvar" icon="pi pi-check"
+                    class="p-button-raised p-button-success me-1" (click)="salvar_click();"></button>
+                <button pButton pRipple type="button" class="p-button-raised p-button-default me-1" label="Voltar"
+                    icon="pi pi-chevron-left" (click)="voltar_click();">
+                </button>
+            </div>
+        </ng-template>
+    </p-card>
+</div>
+
+<p-blockUI [blocked]="loading" [target]="plnForm">
+</p-blockUI>

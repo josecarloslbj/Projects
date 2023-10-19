@@ -1,0 +1,75 @@
+<div class="row">
+ <div class="col-md-6 col-sm-12 pt-3">
+                <div class="cupom-fiscal p-2" style="border-radius: 5px;">
+                    <div class="cupom-fiscal pt-2" style="border-bottom: 1px dashed black;"></div>
+                    <div style="width: 100%;">
+                        <span class="text-left">
+                            {{ cupomFiscalModel.data| date:'dd/MM/yyyy HH:mm' }} 
+                            Loja da Amada 54.485.265/0001-56
+                        </span>
+                        <span style="float: right;"> Caixa: {{cupomFiscalModel.caixa}} </span>
+                    </div>
+
+                    <ng-container *ngIf="cupomFiscalModel.nomeCliente">
+                        <div class="cupom-fiscal pt-2" style="border-bottom: 1px dashed black;"></div>
+                        <div class="text-left">Cliente: {{cupomFiscalModel.nomeCliente}}</div>
+                        <div class="text-left">CPF/CNPJ: {{cupomFiscalModel.cpfcnpjCliente}}</div>
+                    </ng-container>
+                    <div class="cupom-fiscal pt-2" style="border-bottom: 1px dashed black;"></div>
+                    <div class="text-center">**** CUPOM FISCAL ****</div>
+                    <div class="cupom-fiscal pt-2" style="border-bottom: 1px dashed black;"></div>
+
+                    <p-table [value]="cupomFiscalModel.produtos" class="cupom-fiscal">
+                        <ng-template pTemplate="header">
+                            <tr class="cupom-fiscal">
+                                <th class="text-left p-0">Item</th>
+                                <th class="text-left p-0">Un.</th>
+                                <th class="text-center p-0">Qtde.</th>
+                                <th class="text-right p-0">Preço</th>
+                                <th class="text-right p-0">Desconto</th>
+                                <th class="text-right p-0">Total</th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-product>
+                            <tr class="cupom-fiscal">
+                                <td class="text-left">{{product.nome}}</td>
+                                <td class="text-left">{{product.unidadeMedida}}</td>
+                                <td class="text-center">{{product.qtde}}</td>
+                                <td class="text-right">{{product.preco | currency:'BRL'}}</td>
+                                <td class="text-right">{{product.desconto| currency:'BRL'}}</td>
+                                <td class="text-right">{{product.total| currency:'BRL'}}</td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
+
+                    <div class="cupom-fiscal pb-2" style="border-top: 1px dashed black;"></div>
+                    <div class="text-right">
+                        <span *ngIf="cupomFiscalModel.valorDesconto!>0">SUBTOTAL:</span>
+                        <span *ngIf="cupomFiscalModel.valorDesconto==0">TOTAL:</span>
+                        {{ cupomFiscalModel.subTotalVenda | currency:'BRL' }}
+                    </div>
+                    <ng-container *ngIf="cupomFiscalModel.valorDesconto!>0">
+                        <div class="cupom-fiscal pb-2" style="border-top: 1px dashed black;"></div>
+                        <div class="text-right">Desconto: {{ cupomFiscalModel.valorDesconto | currency:'BRL' }}</div>
+                    </ng-container>
+                    <div class="text-right" *ngIf="cupomFiscalModel.valorDesconto!>0">
+                        <div class="cupom-fiscal pb-2" style="border-top: 1px dashed black;"></div>
+                        <span>TOTAL:</span> {{ cupomFiscalModel.subTotalVenda | currency:'BRL' }}
+                    </div>
+                    <div class="cupom-fiscal pb-2" style="border-top: 1px dashed black;"></div>
+                    <div class="text-right" *ngIf="cupomFiscalModel.formaPagto" style="text-transform: uppercase;">
+                        Forma de pagamento {{cupomFiscalModel.formaPagto }}
+                        <span *ngIf="cupomFiscalModel.valorRecebido! > 0 && cupomFiscalModel.formaPagto == 'Dinheiro'">{{ cupomFiscalModel.valorRecebido |
+                            currency:'BRL' }} </span>
+                        <div *ngIf="cupomFiscalModel.valorTroco! > 0 && cupomFiscalModel.formaPagto == 'Dinheiro'"
+                            style="text-transform: uppercase;">TROCO: {{ cupomFiscalModel.valorTroco | currency:'BRL' }} </div>
+                    </div>
+                    <div class="cupom-fiscal pb-2" style="border-top: 1px dashed black;" *ngIf="cupomFiscalModel.observacao">
+                        {{cupomFiscalModel.observacao}}
+                    </div>
+                    <div class="cupom-fiscal pb-2" style="border-top: 1px dashed black;"></div>
+                    <div class="text-center">Identificação do cupom fiscal {{cupomFiscalModel.idPedido}}-{{cupomFiscalModel.guid}}</div>
+                    <div class="cupom-fiscal"></div>
+                </div>
+            </div>
+</div>

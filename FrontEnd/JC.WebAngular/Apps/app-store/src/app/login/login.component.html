@@ -1,0 +1,29 @@
+<div class="container d-flex align-items-center justify-content-center ">
+  
+    <div class="row shadow-5 border-round fundo area-login ">
+      <div class="col-12">
+        <img src="../../assets/img/login/login.gif" width="100%">
+      </div>
+      <div class="col-12">
+        <div class="">
+          <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-user"><i class="pi pi-user"></i></span>
+            <input type="text" class="form-control" placeholder="Usuário" aria-label="user"
+              aria-describedby="basic-addon1" [(ngModel)]="usuario.username" [disabled]="blockedDocument === true">
+          </div>
+          <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-pass"><i class="pi pi-unlock"></i></span>
+            <input type="password" class="form-control" placeholder="Senha" aria-label="Username"
+              aria-describedby="basic-pass" [(ngModel)]="usuario.password" [disabled]="blockedDocument === true">
+          </div>
+          <button pButton pRipple label="Efetuar login" [icon]="blockedDocument === true ? 'pi pi-spin pi-spinner': 'pi pi-sign-in'" [disabled]="blockedDocument === true"
+            class="w-full mb-5 p-button-info p-button-rounded" (click)="fazerLogin()"></button>
+        </div>
+      </div>
+    </div>
+
+</div>
+
+<!-- <p-blockUI [blocked]="blockedDocument">
+  <i class="pi pi-spin pi-spinner" style="font-size: 2rem"></i>
+</p-blockUI> -->

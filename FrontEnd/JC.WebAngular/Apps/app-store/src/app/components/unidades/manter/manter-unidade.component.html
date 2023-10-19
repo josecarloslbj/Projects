@@ -1,0 +1,195 @@
+<div @fade>
+    <p-card>
+        <ng-template pTemplate="header">
+            <div class="card-header card-header-1 "
+                style="line-height: 35px; padding-left: 10px;   border-radius: 5px 5px 0 0">
+                <i class="pi pi-caret-right"></i> CADASTRAR UNIDADE
+            </div>
+        </ng-template>
+        <ng-template pTemplate="body">
+            <!-- Formulario -->
+            <form class="row">
+                <div class="col-md-12 col-sm-12">
+                    <label for="switch1" class="pr-5">Situação atual</label>
+                    <p-inputswitch inputId="switch1" [(ngModel)]="record.ativo"
+                        [ngModelOptions]="{standalone: true}"></p-inputswitch>
+
+                    <span style="position: absolute;">
+                        <p-badge *ngIf="record.ativo===true" value="Ativo"
+                            styleClass="ml-4 mr-4 mb-2"
+                            severity="success"></p-badge>
+                        <p-badge *ngIf="record.ativo===false" value="Inativo"
+                            styleClass="ml-4 mr-4 mb-2"
+                            severity="danger"></p-badge>
+                    </span>
+                </div>
+                <div class="col-md-6 col-sm-12">
+                    <div>
+                        <label for="inputEmail3" class="col-sm-1 col-form-label">Nome:</label>
+                        <div class="col-md-12 col-sm-12">
+                            <input type="text"
+                                class="form-control form-control-sm"
+                                id="inputEmail3"
+                                [(ngModel)]="record.nome" name="nome">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-sm-12">
+                    <label class="col-sm-3 col-form-label">Tipo Unidade:</label>
+                    <div class="flex flex-wrap gap-3">
+                        <div class="flex align-items-center">
+                            <p-radiobutton name="pizza" value="1"
+                                [(ngModel)]="ingredient" inputId="ingredient1"></p-radiobutton>
+                            <label for="ingredient1" class="ml-2">Matriz</label>
+                        </div>
+
+                        <div class="flex align-items-center">
+                            <p-radiobutton name="pizza" value="2"
+                                [(ngModel)]="ingredient" inputId="ingredient2"></p-radiobutton>
+                            <label for="ingredient2" class="ml-2">Filial</label>
+                        </div>
+
+                    </div>
+
+                </div>
+                <div class="col-6">
+                    <div>
+                        <label for="inputEmail3" class="col-sm-1 col-form-label">CPF/CNPJ:</label>
+                        <div class="col-sm-12">
+                            <input type="text"
+                                class="form-control form-control-sm"
+                                id="inputEmail3"
+                                [(ngModel)]="record.cpfCnpj" name="cpfCnpj">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div>
+                        <label for="inputEmail3" class="col-sm-1 col-form-label">Email:</label>
+                        <div class="col-sm-12">
+                            <input type="email"
+                                class="form-control form-control-sm"
+                                id="inputEmail3"                                
+                                [(ngModel)]="record.email" name="email">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div>
+                        <label for="inputDesc" class="col-sm-1 col-form-label">Descrição:</label>
+                        <div class="col-sm-12">
+                            <textarea class="form-control form-control-sm"
+                                id="inputDesc" rows="5"
+                                [(ngModel)]="record.descricao"
+                                name="descricao" aria-label="With textarea"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <p-divider> <span>Endereço</span></p-divider>
+                <div class="col-12  pt-0 pb-0">
+                    <div class="row">
+                        <div class="col-md-2 col-sm-12">
+                            <label for="inputEmail3"
+                                class="col-md-2  col-sm-12 col-form-label">CEP:</label>
+                            <div class="col-sm-12">
+                                <input type="text"
+                                    class="form-control form-control-sm"
+                                    id="inputEmail3"
+                                    [(ngModel)]="record.cep" name="cep">
+                            </div>
+                        </div>
+                        <div class="col-md-8 col-sm-12">
+                            <label for="inputEmail3"
+                                class="col-sm-1 col-form-label">Logradouro:</label>
+                            <div class="col-sm-12">
+                                <input type="text"
+                                    class="form-control form-control-sm"
+                                    id="inputEmail3"
+                                    [(ngModel)]="record.logradouro" name="logradouro">
+                            </div>
+                        </div>
+                        <div class="col-md-2 col-sm-12">
+                            <label for="inputEmail3"
+                                class="col-sm-1 col-form-label">Número:</label>
+                            <div class="col-sm-12">
+                                <input type="text"
+                                    class="form-control form-control-sm"
+                                    id="inputEmail3"
+                                    [(ngModel)]="record.numero" name="numero">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 pt-0 pb-0">
+                    <div>
+                        <label for="inputDesc" class="col-sm-1 col-form-label">Complemento:</label>
+                        <div class="col-sm-12">
+                            <textarea class="form-control form-control-sm"
+                                id="inputDesc" rows="5"
+                                [(ngModel)]="record.complemento"
+                                name="complemento" aria-label="With textarea"></textarea>
+                        </div>
+                    </div>
+                </div>
+               
+                <div class="col-12 pt-0 pb-0">
+                    <div class="row">
+                        <div class="col-md-2 col-sm-12">
+                            <label for="pais" class="col-sm-1 col-form-label">Pais:</label>
+                            <div class="col-md-12 col-sm-12">
+                                <p-dropdown id="pais" [autoDisplayFirst]="false"
+                                    [options]="paises" [(ngModel)]="selectedPais"
+                                    [ngModelOptions]="{standalone: true}"
+                                    optionLabel="descricao" dataKey="id" [filter]="true" filterBy="nome" [showClear]="true"
+                                    (onChange)="pais_onChange($event.value)"></p-dropdown>
+                            </div>
+                        </div>
+                        <div class="col-md-2 col-sm-12">
+                            <label for="estado" class="col-sm-1 col-form-label">Estado:</label>
+                            <div class="col-md-12 col-sm-12">
+                                <p-dropdown id="estado" [autoDisplayFirst]="false"
+                                    [options]="estados" [(ngModel)]="selectedEstado"
+                                    [ngModelOptions]="{standalone: true}"
+                                    optionLabel="nome" dataKey="id" [filter]="true" filterBy="nome" [showClear]="true"
+                                    (onChange)="estado_onChange($event.value)"></p-dropdown>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-12">
+                            <label for="cidade" class="col-sm-1 col-form-label">Cidade:</label>
+                            <div class="col-md-12 col-sm-12">
+                                <p-dropdown id="cidade" [autoDisplayFirst]="false"
+                                    [options]="cidades" [(ngModel)]="selectedCidade"
+                                    [ngModelOptions]="{standalone: true}"
+                                    optionLabel="nome" dataKey="id" [filter]="true" filterBy="nome" [showClear]="true"
+                                    [virtualScroll]="true" [virtualScrollItemSize]="38"
+                                    (onChange)="cidade_onChange($event.value)"></p-dropdown>
+                            </div>
+                        </div>
+                        <div class="col-md-5 col-sm-12">
+                            <label for="bairro"  class="col-sm-1 col-form-label">Bairro:</label>
+                            <div class="col-md-12 col-sm-12">
+                                <p-dropdown id="bairro" [autoDisplayFirst]="false"
+                                    [options]="bairros" [(ngModel)]="selectedBairro"
+                                    [ngModelOptions]="{standalone: true}"
+                                    optionLabel="nome" dataKey="id"  [filter]="true" filterBy="nome" [showClear]="true"
+                                    (onChange)="bairro_onChange($event.value)"></p-dropdown>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+            <!-- Botoes -->
+            <div class="col-12">
+                <button pButton pRipple type="button" label="Salvar"
+                    icon="pi pi-check"
+                    class="p-button-raised p-button-success me-1"
+                    (click)="salvar_click();"></button>
+                <button pButton pRipple type="button"
+                    class="p-button-raised p-button-default me-1" label="Voltar"
+                    icon="pi pi-chevron-left" [routerLink]="['/unidades']">
+                </button>
+            </div>
+        </ng-template>
+    </p-card>
+</div>
