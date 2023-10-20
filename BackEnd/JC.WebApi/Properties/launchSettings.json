@@ -26,7 +26,8 @@
       "launchUrl": "weatherforecast",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
-      }
+      },
+      "applicationUrl": "https://localhost:7056;http://localhost:5056"
     },
     "Docker": {
       "commandName": "Docker",
@@ -37,8 +38,21 @@
       },
       "publishAllPorts": true,
       "useSSL": true
+    },
+    "Local": {
+      //"commandName": "IIS",
+      //"commandName": "Project",
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "launchBrowser": true,
+      "launchUrl": "swagger",
+      "applicationUrl": "https://localhost:7056;http://localhost:5056",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
     }
   },
+
   "$schema": "https://json.schemastore.org/launchsettings.json",
   "iisSettings": {
     "windowsAuthentication": false,

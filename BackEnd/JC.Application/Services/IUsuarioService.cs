@@ -15,8 +15,10 @@ namespace JC.Application.Services
         Task<PagedResultDTO<UsuarioDTO>> ObterTodos(PagedInputDTO filters);
 
         Task<UsuarioDTO> ObterUsuarioLoginSenha(string login, string senha);
-        AuthenticateResponse Authenticate(AuthenticateRequest model, string ipAddress);
-        AuthenticateResponse RefreshToken(string token, string ipAddress);
+
+
+        Task<AuthenticateResponse> Authenticate(AuthenticateRequest model, string ipAddress);
+        Task<AuthenticateResponse> RefreshToken(string token, string refreshToken, string ipAddress);
         void RevokeToken(string token, string ipAddress);
         IEnumerable<User> GetAll();
         User GetById(int id);

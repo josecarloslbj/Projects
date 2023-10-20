@@ -172,24 +172,23 @@ namespace JC.Application.Services
             return user;
         }
 
-        public AuthenticateResponse Authenticate(AuthenticateRequest model, string ipAddress)
+        public async Task<AuthenticateResponse> Authenticate(AuthenticateRequest model, string ipAddress)
         {
             var usuario = ObterUsuarioLoginSenha(model.Username, model.Password).Result;
             if (usuario == null)
-                throw new Exception("Username or password is incorrect");
-            // throw new AppException("Username or password is incorrect");
+                throw new DomainLayerException("Username or password is incorrect");
+
+            var permissoes = new List<string>();
+            var retornoPermissoes = _permissaoService.ObterPermissoesIdUsuario(usuario.Id).Result;
+            if (retornoPermissoes != null)
+                permissoes = retornoPermissoes.Select(q => q.Nome!).Distinct().ToList();
+
 
             User user = new User();
             user.Id = usuario.Id;
             user.Username = usuario.Nome!;
             user.PasswordHash = usuario.Senha!;
 
-            var permissoes = new List<string>();
-            var retornoPermissoes = _permissaoService.ObterPermissoesIdUsuario(usuario.Id).Result;
-            if (retornoPermissoes != null)
-            {
-                permissoes = retornoPermissoes.Select(q => q.Nome!).Distinct().ToList();
-            }
             //// validate
             //if (user == null || !BCrypt.Verify(model.Password, user.PasswordHash))
             //    throw new AppException("Username or password is incorrect");
@@ -197,63 +196,68 @@ namespace JC.Application.Services
             // authentication successful so generate jwt and refresh tokens
             var jwtToken = _jwtUtils.GenerateJwtToken(user);
             var refreshToken = _jwtUtils.GenerateRefreshToken(ipAddress);
+
+            usuario.RefreshToken = refreshToken.Token;
+            usuario.RefreshTokenExpiryTime = refreshToken.Expires;
+
+
             // user.RefreshTokens.Add(refreshToken);
 
             // remove old refresh tokens from user
             // removeOldRefreshTokens(user);
 
             // save changes to db
-            //_context.Update(user);
-            //_context.SaveChanges();
+            var retorno = await _usuarioRepository.SaveOrUpdate(_mapper.Map<Usuario>(usuario));
 
             return new AuthenticateResponse(user, jwtToken, refreshToken.Token, permissoes);
         }
 
-        public AuthenticateResponse RefreshToken(string token, string ipAddress)
+        public async Task<AuthenticateResponse> RefreshToken(string token, string refreshToken, string ipAddress)
         {
-            var user = getUserByRefreshToken(token);
-            var refreshToken = user.RefreshTokens.Single(x => x.Token == token);
+            var user = getUserByRefreshToken(token, refreshToken);
+            if (user == null)
+                throw new DomainLayerException("Invalid token");
 
-            if (refreshToken.IsRevoked)
-            {
-                // revoke all descendant tokens in case this token has been compromised
-                revokeDescendantRefreshTokens(refreshToken, user, ipAddress, $"Attempted reuse of revoked ancestor token: {token}");
-                //_context.Update(user);
-                //_context.SaveChanges();
-            }
+            // var refreshToken = user.RefreshTokens.Single(x => x.Token == token);
 
-            if (!refreshToken.IsActive)
-                throw new Exception("Invalid token");
-            //throw new AppException("Invalid token");
+            //if (refreshToken.IsRevoked)
+            //{
+            //    // revoke all descendant tokens in case this token has been compromised
+            //    revokeDescendantRefreshTokens(refreshToken, user, ipAddress, $"Attempted reuse of revoked ancestor token: {token}");
+            //    //_context.Update(user);
+            //    //_context.SaveChanges();
+            //}
+
+            //if (!refreshToken.IsActive)
+            //    throw new Exception("Invalid token");
 
             // replace old refresh token with a new one (rotate token)
-            var newRefreshToken = rotateRefreshToken(refreshToken, ipAddress);
-            user.RefreshTokens.Add(newRefreshToken);
+            //var newRefreshToken = rotateRefreshToken(refreshToken, ipAddress);
+            //user.RefreshTokens.Add(newRefreshToken);
 
-            // remove old refresh tokens from user
-            removeOldRefreshTokens(user);
+            //// remove old refresh tokens from user
+            //removeOldRefreshTokens(user);
 
+            var newAccessToken = _jwtUtils.GenerateJwtToken(user);
+            var newRefreshToken = _jwtUtils.GenerateRefreshToken(ipAddress);
 
             var permissoes = new List<string>();
             var retornoPermissoes = _permissaoService.ObterPermissoesIdUsuario(user.Id).Result;
-            if (retornoPermissoes != null)
-            {
-                permissoes = retornoPermissoes.Select(q => q.Nome!).Distinct().ToList();
-            }
+            if (retornoPermissoes != null)            
+                permissoes = retornoPermissoes.Select(q => q.Nome!).Distinct().ToList();           
+
+            var usuario = _usuarioRepository.Get(user.Id).Result;
+            usuario.RefreshToken = newRefreshToken.Token;
+            usuario.RefreshTokenExpiryTime = newRefreshToken.Expires;
 
             // save changes to db
-            //_context.Update(user);
-            //_context.SaveChanges();
-
-            // generate new jwt
-            var jwtToken = _jwtUtils.GenerateJwtToken(user);
-
-            return new AuthenticateResponse(user, jwtToken, newRefreshToken.Token, permissoes);
+            var retorno = await _usuarioRepository.SaveOrUpdate(_mapper.Map<Usuario>(usuario));
+            return new AuthenticateResponse(user, newAccessToken, newRefreshToken.Token, permissoes);
         }
 
         public void RevokeToken(string token, string ipAddress)
         {
-            var user = getUserByRefreshToken(token);
+            var user = getUserByRefreshToken(token, "");
             var refreshToken = user.RefreshTokens.Single(x => x.Token == token);
 
             if (!refreshToken.IsActive)
@@ -267,20 +271,38 @@ namespace JC.Application.Services
         }
 
 
-        private User getUserByRefreshToken(string token)
+        private User getUserByRefreshToken(string token, string refreshToken)
         {
-            //var user = _context.Users.SingleOrDefault(u => u.RefreshTokens.Any(t => t.Token == token));
+            var principal = _jwtUtils.GetPrincipalFromExpiredToken(token);
 
-            //if (user == null)
-            //    throw new AppException("Invalid token");
+            if (principal == null)
+                throw new DomainLayerException("ERRO TOKEN EXPIRADO");
 
-            //return user;
+            int idUsuario = 0;
+            foreach (var item in principal.Identities)
+            {
+                foreach (var c in item.Claims)
+                {
+                    if (c.Type == "id")
+                    {
+                        idUsuario = Convert.ToInt32(c.Value);
+                        break;
+                    }
+                }
+            }
 
-            // throw new AppException("Invalid token");
+            var usuario = _usuarioRepository.Get(idUsuario).Result;
+            if (usuario == null)
+                throw new DomainLayerException("Invalid token");
+
+            if (usuario == null || usuario.RefreshToken != refreshToken || usuario.RefreshTokenExpiryTime <= DateTime.Now)
+                throw new DomainLayerException("Invalid access token/refresh token");          
 
             return new User
             {
-                Id = 99
+                Id = usuario.Id,
+                FirstName = usuario.Nome,
+                Username = usuario.Login,
             };
         }
 

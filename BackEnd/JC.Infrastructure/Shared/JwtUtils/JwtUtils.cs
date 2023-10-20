@@ -1,6 +1,7 @@
 ﻿namespace JC.Infrastructure.Shared.JwtUtils;
 
 using JC.Infrastructure.Shared.Authorization.Model;
+using Microsoft.AspNetCore.DataProtection.KeyManagement;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -29,10 +30,13 @@ public class JwtUtils : IJwtUtils
         var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
         var tokenDescriptor = new SecurityTokenDescriptor
         {
+            Audience = _appSettings.Audience,
+            Issuer = _appSettings.Issuer,
             Subject = new ClaimsIdentity(new[] { new Claim("id", user.Id.ToString()) }),
-            Expires = DateTime.UtcNow.AddHours(10),
-            //Expires = DateTime.UtcNow.AddSeconds(30),
-            SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+            //Expires = DateTime.UtcNow.AddHours(10),
+            Expires = DateTime.UtcNow.AddMinutes(1),
+            SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
+
         };
         var token = tokenHandler.CreateToken(tokenDescriptor);
         return tokenHandler.WriteToken(token);
@@ -51,8 +55,10 @@ public class JwtUtils : IJwtUtils
             {
                 ValidateIssuerSigningKey = true,
                 IssuerSigningKey = new SymmetricSecurityKey(key),
-                ValidateIssuer = false,
-                ValidateAudience = false,
+                ValidateIssuer = true,
+                ValidIssuer = _appSettings.Issuer,
+                ValidateAudience = true,
+                ValidAudience = _appSettings.Audience,
                 // set clockskew to zero so tokens expire exactly at token expiration time (instead of 5 minutes later)
                 ClockSkew = TimeSpan.Zero
             }, out SecurityToken validatedToken);
@@ -63,13 +69,33 @@ public class JwtUtils : IJwtUtils
             // return user id from JWT token if validation successful
             return userId;
         }
-        catch
+        catch (Exception ex)
         {
             // return null if validation fails
             return null;
         }
     }
+    public ClaimsPrincipal GetPrincipalFromExpiredToken(string? token)
+    {
+        var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
+        var tokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateAudience = false,
+            ValidateIssuer = false,
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(key),
+            ValidateLifetime = false         
+        };
 
+        var tokenHandler = new JwtSecurityTokenHandler();
+
+        var principal = tokenHandler.ValidateToken(token, tokenValidationParameters, out SecurityToken securityToken);
+
+        if (securityToken is not JwtSecurityToken jwtSecurityToken || !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
+            throw new SecurityTokenException("Invalid token");
+
+        return principal;
+    }
     public RefreshToken GenerateRefreshToken(string ipAddress)
     {
         var refreshToken = new RefreshToken
@@ -85,15 +111,10 @@ public class JwtUtils : IJwtUtils
 
         string getUniqueToken()
         {
-            // token is a cryptographically strong random sequence of values
-            var token = Convert.ToBase64String(RandomNumberGenerator.GetBytes(64));
-            // ensure token is unique by checking against db
-            //  var tokenIsUnique = !_context.Users.Any(u => u.RefreshTokens.Any(t => t.Token == token));
-
-            //if (!tokenIsUnique)
-            //    return getUniqueToken();
-
-            return token;
+            var randomNumber = new byte[64];
+            using var rng = RandomNumberGenerator.Create();
+            rng.GetBytes(randomNumber);
+            return Convert.ToBase64String(randomNumber);
         }
     }
 }

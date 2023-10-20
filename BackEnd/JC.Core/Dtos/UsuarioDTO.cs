@@ -19,7 +19,8 @@ namespace JC.Core.Dtos
 
         public int? IdEndereco { get; set; }
         public virtual Endereco? Endereco { get; set; }
-
+        public string RefreshToken { set; get; }
+        public DateTime? RefreshTokenExpiryTime { set; get; }
         public bool IsValid()
         {
             if (string.IsNullOrEmpty(Nome)) return false;

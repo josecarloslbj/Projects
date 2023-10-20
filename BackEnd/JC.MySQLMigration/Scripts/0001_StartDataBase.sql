@@ -173,6 +173,8 @@ CREATE TABLE Usuario (
   Ativo TINYINT NULL DEFAULT 1,
   Arquivo_Id INT NULL, 
   Endereco_Id INT NULL,  
+  RefreshToken VARCHAR(3000) NULL,
+  RefreshTokenExpiryTime  DATETIME NULL,
    INDEX Usuario_Endereco_Id_FK_idx (Endereco_Id ASC),  
    CONSTRAINT FK_Usuario_Endereco_Id
     FOREIGN KEY (Endereco_Id)

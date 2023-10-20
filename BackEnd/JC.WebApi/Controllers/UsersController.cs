@@ -3,6 +3,7 @@ using JC.Application.Services;
 using JC.Infrastructure.Shared.Attributes;
 using JC.Infrastructure.Shared.Authorization.Model;
 using Microsoft.AspNetCore.Mvc;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace JC.Api.Controllers
 {
@@ -28,20 +29,22 @@ namespace JC.Api.Controllers
 
         [AllowAnonymous]
         [HttpPost("authenticate")]
-        public IActionResult Authenticate(AuthenticateRequest model)
+        public async Task<IActionResult> Authenticate(AuthenticateRequest model)
         {
-            var response = _userService.Authenticate(model, ipAddress());
-            setTokenCookie(response.RefreshToken);
+            var response = await _userService.Authenticate(model, ipAddress());
+            await setTokenCookie(response.RefreshToken);
             return Ok(response);
         }
 
         [AllowAnonymous]
         [HttpPost("refresh-token")]
-        public IActionResult RefreshToken()
+        public async Task<IActionResult> RefreshToken()
         {
+            var token = Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
             var refreshToken = Request.Cookies["refreshToken"];
-            var response = _userService.RefreshToken(refreshToken, ipAddress());
-            setTokenCookie(response.RefreshToken);
+
+            var response = await _userService.RefreshToken(token, refreshToken, ipAddress());
+            await setTokenCookie(response.RefreshToken);
             return Ok(response);
         }
 
@@ -81,7 +84,7 @@ namespace JC.Api.Controllers
 
         // helper methods
 
-        private void setTokenCookie(string token)
+        private async Task setTokenCookie(string token)
         {
             // append cookie with refresh token to the http response
             var cookieOptions = new CookieOptions

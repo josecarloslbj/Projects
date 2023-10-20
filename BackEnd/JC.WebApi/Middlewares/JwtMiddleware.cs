@@ -23,13 +23,17 @@ public class JwtMiddleware
         var userId = jwtUtils.ValidateJwtToken(token!);
         if (userId != null)
         {
-            if (Contexto.Atual != null)
-            {
-                // attach user to context on successful jwt validation
-                UsuarioDTO usuarioAtual = await userService.ObterUsuario(userId.Value);
-                usuarioAtual.Token = token;
-                context.Items["User"] = usuarioAtual;
-            }
+            UsuarioDTO usuarioAtual = await userService.ObterUsuario(userId.Value);
+            usuarioAtual.Token = token;
+            context.Items["User"] = usuarioAtual;
+
+            //if (Contexto.Atual != null)
+            //{
+            //    // attach user to context on successful jwt validation
+            //    UsuarioDTO usuarioAtual = await userService.ObterUsuario(userId.Value);
+            //    usuarioAtual.Token = token;
+            //    context.Items["User"] = usuarioAtual;
+            //}
         }
 
         await _next(context);
